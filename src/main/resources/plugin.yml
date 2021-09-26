@@ -1,0 +1,11 @@
+name: Model3DPlacer
+version: ${project.version}
+main: com.gmail.anthony17j.model3dplacer.Model3DPlacer
+api-version: 1.17
+authors: [ Uxzylon ]
+description: Permet de placer des modèles avec Custom Model Data Facilement
+commands:
+  model3d:
+    description: Permet de placer des modèles avec Custom Model Data Facilement
+    usage: /<command> <fonction>
+    permission: model3dplacer.command
