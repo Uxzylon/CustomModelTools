@@ -67,16 +67,30 @@ public class Utils {
                         if (metaHand.hasCustomModelData()) {
                             double distance = entity.getLocation().distance(player.getLocation());
                             if (distance < lowestDistance) {
-                                lowestDistance = distance;
-                                closestArmorstand = entity;
+                                if (stand.getCustomName() != null) {
+                                    if (!stand.getCustomName().contains("CAR_")) {
+                                        lowestDistance = distance;
+                                        closestArmorstand = entity;
+                                    }
+                                } else {
+                                    lowestDistance = distance;
+                                    closestArmorstand = entity;
+                                }
                             }
                         }
                     } else if (metaHead != null) {
                         if (metaHead.hasCustomModelData()) {
                             double distance = entity.getLocation().distance(player.getLocation());
                             if (distance < lowestDistance) {
-                                lowestDistance = distance;
-                                closestArmorstand = entity;
+                                if (stand.getCustomName() != null) {
+                                    if (!stand.getCustomName().contains("CAR_")) {
+                                        lowestDistance = distance;
+                                        closestArmorstand = entity;
+                                    }
+                                } else {
+                                    lowestDistance = distance;
+                                    closestArmorstand = entity;
+                                }
                             }
                         }
                     }
@@ -110,9 +124,7 @@ public class Utils {
         return head;
     }
 
-    public static String playerOnly = "Les commandes ne peuvent être éxécutées que par un joueur";
     public static String noSelection = ChatColor.GOLD + "Vous n'avez pas de selection ! " + ChatColor.LIGHT_PURPLE + "/select3dmodel";
-    public static String noPermission = ChatColor.RED + "Vous n'avez pas la permission d'exécuter cette commande";
     public static String needId = ChatColor.RED + "Vous devez fournir un Id CustomModelData";
 
     public static String MoveMenu = ChatColor.RED + "Menu déplacement " + ChatColor.DARK_GREEN + "Par Uxzylon";
