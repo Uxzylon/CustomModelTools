@@ -4,6 +4,42 @@ main: com.gmail.anthony17j.model3dplacer.Model3DPlacer
 api-version: 1.17
 authors: [ Uxzylon ]
 description: Permet de placer des modèles avec Custom Model Data Facilement
+permissions:
+  model3dplacer.command.give:
+    description: Autorise fonction give
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.move:
+    description: Autorise fonction move
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.place:
+    description: Autorise fonction place
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.remove:
+    description: Autorise fonction remove
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.select:
+    description: Autorise fonction select
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.unselect:
+    description: Autorise fonction unselect
+    default: op
+    children:
+      model3dplacer.command: true
+  model3dplacer.command.switch:
+    description: Autorise fonction switch
+    default: op
+    children:
+      model3dplacer.command: true
 commands:
   model3d:
     description: Permet de placer des modèles avec Custom Model Data Facilement

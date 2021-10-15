@@ -29,6 +29,16 @@ public class remove3dModel extends SubCommand {
     }
 
     @Override
+    public String permission() {
+        return "model3dplacer.command.remove";
+    }
+
+    @Override
+    public boolean canRunConsole() {
+        return false;
+    }
+
+    @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         return Collections.emptyList();
     }

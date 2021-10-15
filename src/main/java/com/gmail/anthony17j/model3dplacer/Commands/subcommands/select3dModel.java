@@ -29,6 +29,16 @@ public class select3dModel extends SubCommand {
     }
 
     @Override
+    public String permission() {
+        return "model3dplacer.command.select";
+    }
+
+    @Override
+    public boolean canRunConsole() {
+        return false;
+    }
+
+    @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         return Collections.emptyList();
     }

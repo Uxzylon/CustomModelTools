@@ -34,6 +34,16 @@ public class place3dModel extends SubCommand {
     }
 
     @Override
+    public String permission() {
+        return "model3dplacer.command.place";
+    }
+
+    @Override
+    public boolean canRunConsole() {
+        return false;
+    }
+
+    @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         if (args.length == 2) {
             return Collections.singletonList("<id>");

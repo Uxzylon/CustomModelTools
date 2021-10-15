@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.anthony17j</groupId>
     <artifactId>Model3DPlacer</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <packaging>jar</packaging>
 
     <name>Model3DPlacer</name>
@@ -49,7 +49,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>C:\Users\Antho\Downloads\spigot_server_test\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\Antho\Desktop\spigot_server_test\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

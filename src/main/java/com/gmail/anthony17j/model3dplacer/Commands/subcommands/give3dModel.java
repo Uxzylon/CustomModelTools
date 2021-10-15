@@ -29,6 +29,16 @@ public class give3dModel extends SubCommand {
     }
 
     @Override
+    public String permission() {
+        return "model3dplacer.command.give";
+    }
+
+    @Override
+    public boolean canRunConsole() {
+        return false;
+    }
+
+    @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         if (args.length == 2) {
             return Collections.singletonList("<id>");

@@ -2,7 +2,6 @@ package com.gmail.anthony17j.model3dplacer.Commands;
 
 import com.gmail.anthony17j.model3dplacer.Commands.subcommands.*;
 import com.gmail.anthony17j.model3dplacer.Model3DPlacer;
-import com.gmail.anthony17j.model3dplacer.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,7 +12,7 @@ import java.util.*;
 
 public class model3dCommand implements TabExecutor {
 
-    private ArrayList<SubCommand> subCommands = new ArrayList<>();
+    private final ArrayList<SubCommand> subCommands = new ArrayList<>();
     public model3dCommand() {
         subCommands.add(new give3dModel());
         subCommands.add(new move3dModel());
@@ -31,7 +30,9 @@ public class model3dCommand implements TabExecutor {
     public void help(Player player) {
         player.sendMessage(ChatColor.YELLOW + "============" + ChatColor.GREEN + " Model3DPlacer " + ChatColor.YELLOW + "============");
         for (int i=0; i < getSubCommands().size(); i++) {
-            player.sendMessage(getSubCommands().get(i).getSyntax() + " - " + ChatColor.GRAY + getSubCommands().get(i).getDescription());
+            if (player.hasPermission(getSubCommands().get(i).permission())) {
+                player.sendMessage(getSubCommands().get(i).getSyntax() + " - " + ChatColor.GRAY + getSubCommands().get(i).getDescription());
+            }
         }
     }
 
@@ -39,38 +40,49 @@ public class model3dCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof  Player) {
             Player player = (Player) sender;
-            int y = -1;
-            if (player.hasPermission("model3dplacer.command")) {
-                if (args.length > 0) {
-                    for (int i=0; i < getSubCommands().size(); i++) {
-                        if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())) {
-                            //getSubCommands().get(i).perform(player, args);
-                            y = i;
+            if (args.length > 0) {
+                boolean found = false;
+                for (int i=0; i < getSubCommands().size(); i++) {
+                    if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())) {
+                        found = true;
+                        if (player.hasPermission(getSubCommands().get(i).permission())) {
+                            getSubCommands().get(i).perform(player, args);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission!");
                         }
                     }
-                    if (y != -1) {
-                        getSubCommands().get(y).perform(player, args);
-                    } else {
-                        help(player);
-                    }
-                } else {
+                }
+                if (!found) {
                     help(player);
                 }
             } else {
-                player.sendMessage(Utils.noPermission);
+                help(player);
             }
         } else {
-            Model3DPlacer.plugin.getLogger().info(Utils.playerOnly);
+            if (args.length > 0) {
+                for (int i=0; i < getSubCommands().size(); i++) {
+                    if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())) {
+                        if (getSubCommands().get(i).canRunConsole()) {
+                            getSubCommands().get(i).perform(null, args);
+                        } else {
+                            Model3DPlacer.plugin.getLogger().info("Player Only!");
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        Player player = (Player) sender;
         if (args.length == 1) {
             ArrayList<String> subCommandsArguments = new ArrayList<>();
             for (int i=0; i < getSubCommands().size(); i++) {
-                subCommandsArguments.add(getSubCommands().get(i).getName());
+                if (player.hasPermission(getSubCommands().get(i).permission())) {
+                    subCommandsArguments.add(getSubCommands().get(i).getName());
+                }
             }
             return subCommandsArguments;
         } else if (args.length >= 2) {

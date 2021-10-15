@@ -29,6 +29,16 @@ public class unselect3dModel extends SubCommand {
     }
 
     @Override
+    public String permission() {
+        return "model3dplacer.command.unselect";
+    }
+
+    @Override
+    public boolean canRunConsole() {
+        return false;
+    }
+
+    @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         return Collections.emptyList();
     }
