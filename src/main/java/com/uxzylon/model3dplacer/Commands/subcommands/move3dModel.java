@@ -64,46 +64,19 @@ public class move3dModel extends SubCommand {
             ItemStack rotateBack = Utils.getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTdiMTc5MWJkYzQ2ZDhhNWM1MTcyOWU4OTgyZmQ0MzliYjQwNTEzZjY0YjViYWJlZTkzMjk0ZWZjMWM3In19fQ==");
             ItemStack exit = new ItemStack(Material.BARRIER);
 
-            ItemMeta arrowUp_meta = arrowUp.getItemMeta();
-            arrowUp_meta.setDisplayName(Utils.MoveMenuUp);
-            ItemMeta arrowDown_meta = arrowDown.getItemMeta();
-            arrowDown_meta.setDisplayName(Utils.MoveMenuDown);
-            ItemMeta arrowLeft_meta = arrowLeft.getItemMeta();
-            arrowLeft_meta.setDisplayName(Utils.MoveMenuLeft);
-            ItemMeta arrowRight_meta = arrowRight.getItemMeta();
-            arrowRight_meta.setDisplayName(Utils.MoveMenuRight);
-            ItemMeta arrowWhiteUp_meta = arrowWhiteUp.getItemMeta();
-            arrowWhiteUp_meta.setDisplayName(Utils.MoveMenuWhiteUp);
-            ItemMeta arrowWhiteDown_meta = arrowWhiteDown.getItemMeta();
-            arrowWhiteDown_meta.setDisplayName(Utils.MoveMenuWhiteDown);
-            ItemMeta rotateRight_meta = rotateRight.getItemMeta();
-            rotateRight_meta.setDisplayName(Utils.MoveMenuRotateRight);
-            ItemMeta rotateLeft_meta = rotateLeft.getItemMeta();
-            rotateLeft_meta.setDisplayName(Utils.MoveMenuRotateLeft);
-            ItemMeta rotateRightSide_meta = rotateRightSide.getItemMeta();
-            rotateRightSide_meta.setDisplayName(Utils.MoveMenuRotateRightSide);
-            ItemMeta rotateLeftSide_meta = rotateLeftSide.getItemMeta();
-            rotateLeftSide_meta.setDisplayName(Utils.MoveMenuRotateLeftSide);
-            ItemMeta rotateFront_meta = rotateFront.getItemMeta();
-            rotateFront_meta.setDisplayName(Utils.MoveMenuRotateFront);
-            ItemMeta rotateBack_meta = rotateBack.getItemMeta();
-            rotateBack_meta.setDisplayName(Utils.MoveMenuRotateBack);
-            ItemMeta exit_meta = exit.getItemMeta();
-            exit_meta.setDisplayName(Utils.MoveMenuExit);
-
-            arrowUp.setItemMeta(arrowUp_meta);
-            arrowDown.setItemMeta(arrowDown_meta);
-            arrowLeft.setItemMeta(arrowLeft_meta);
-            arrowRight.setItemMeta(arrowRight_meta);
-            arrowWhiteUp.setItemMeta(arrowWhiteUp_meta);
-            arrowWhiteDown.setItemMeta(arrowWhiteDown_meta);
-            rotateRight.setItemMeta(rotateRight_meta);
-            rotateLeft.setItemMeta(rotateLeft_meta);
-            rotateRightSide.setItemMeta(rotateRightSide_meta);
-            rotateLeftSide.setItemMeta(rotateLeftSide_meta);
-            rotateFront.setItemMeta(rotateFront_meta);
-            rotateBack.setItemMeta(rotateBack_meta);
-            exit.setItemMeta(exit_meta);
+            setDisplayName(arrowUp, Utils.MoveMenuUp);
+            setDisplayName(arrowDown, Utils.MoveMenuDown);
+            setDisplayName(arrowLeft, Utils.MoveMenuLeft);
+            setDisplayName(arrowRight, Utils.MoveMenuRight);
+            setDisplayName(arrowWhiteUp, Utils.MoveMenuWhiteUp);
+            setDisplayName(arrowWhiteDown, Utils.MoveMenuWhiteDown);
+            setDisplayName(rotateRight, Utils.MoveMenuRotateRight);
+            setDisplayName(rotateLeft, Utils.MoveMenuRotateLeft);
+            setDisplayName(rotateRightSide, Utils.MoveMenuRotateRightSide);
+            setDisplayName(rotateLeftSide, Utils.MoveMenuRotateLeftSide);
+            setDisplayName(rotateFront, Utils.MoveMenuRotateFront);
+            setDisplayName(rotateBack, Utils.MoveMenuRotateBack);
+            setDisplayName(exit, Utils.MoveMenuExit);
 
             gui.setItem(1, arrowUp);
             gui.setItem(9, arrowLeft);
@@ -122,5 +95,12 @@ public class move3dModel extends SubCommand {
         } else {
             player.sendMessage(Utils.noSelection);
         }
+    }
+
+    private void setDisplayName(ItemStack item, String name) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
     }
 }

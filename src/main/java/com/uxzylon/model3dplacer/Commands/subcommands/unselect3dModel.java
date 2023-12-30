@@ -5,6 +5,8 @@ import com.uxzylon.model3dplacer.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,11 +52,13 @@ public class unselect3dModel extends SubCommand {
         if (stand != null) {
             stand.setGlowing(false);
             Utils.selectedStand.remove(uuid);
-            if (stand.getEquipment().getItemInMainHand().getItemMeta() != null) {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + Objects.requireNonNull(stand.getEquipment().getItemInMainHand().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " désélectionné !");
-            } else {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + Objects.requireNonNull(stand.getEquipment().getHelmet().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " désélectionné !");
+
+            int customModelData = getArmorStandCustomModelData(stand);
+            if (customModelData == -1) {
+                return;
             }
+
+            player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + customModelData + ChatColor.YELLOW + " désélectionné !");
         } else {
             player.sendMessage(Utils.noSelection);
         }

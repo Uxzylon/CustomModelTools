@@ -5,6 +5,7 @@ import com.uxzylon.model3dplacer.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +47,7 @@ public class select3dModel extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         ArmorStand stand = Utils.getClosestModel(player);
+
         if (stand != null) {
             UUID uuid = player.getUniqueId();
             ArmorStand oldStand = Utils.selectedStand.get(uuid);
@@ -54,11 +56,13 @@ public class select3dModel extends SubCommand {
             }
             Utils.selectedStand.put(uuid, stand);
             stand.setGlowing(true);
-            if (stand.getEquipment().getItemInMainHand().getItemMeta() != null) {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + Objects.requireNonNull(stand.getEquipment().getItemInMainHand().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " sélectionné !");
-            } else {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + Objects.requireNonNull(stand.getEquipment().getHelmet().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " sélectionné !");
+
+            int customModelData = getArmorStandCustomModelData(stand);
+            if (customModelData == -1) {
+                return;
             }
+
+            player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + customModelData + ChatColor.YELLOW + " sélectionné !");
         } else {
             player.sendMessage(ChatColor.RED + "Aucun Armor Stand avec CustomModelData trouvé !");
         }

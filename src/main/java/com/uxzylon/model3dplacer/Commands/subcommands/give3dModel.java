@@ -51,7 +51,9 @@ public class give3dModel extends SubCommand {
         if (args.length > 1 && Utils.isInt(args[1])) {
             ItemStack item = new ItemStack(Material.CLOCK);
             ItemMeta meta = item.getItemMeta();
-            assert meta != null;
+            if (meta == null) {
+                return;
+            }
             meta.setCustomModelData(Integer.valueOf(args[1]));
             item.setItemMeta(meta);
             player.getInventory().addItem(item);

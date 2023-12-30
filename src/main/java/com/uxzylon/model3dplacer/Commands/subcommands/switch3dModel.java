@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
@@ -49,7 +50,11 @@ public class switch3dModel extends SubCommand {
     public void perform(Player player, String[] args) {
         ArmorStand stand = Utils.selectedStand.get(player.getUniqueId());
         if (stand != null) {
-            ItemStack itemHand = stand.getEquipment().getItemInMainHand();
+            EntityEquipment equipment = stand.getEquipment();
+            if (equipment == null) {
+                return;
+            }
+            ItemStack itemHand = equipment.getItemInMainHand();
             ItemStack itemHead = stand.getEquipment().getHelmet();
             if (itemHand.getItemMeta() != null) {
                 stand.getEquipment().setHelmet(itemHand);

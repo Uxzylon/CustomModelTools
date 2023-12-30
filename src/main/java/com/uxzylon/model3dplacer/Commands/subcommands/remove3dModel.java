@@ -48,11 +48,12 @@ public class remove3dModel extends SubCommand {
         UUID uuid = player.getUniqueId();
         ArmorStand stand = Utils.selectedStand.get(uuid);
         if (stand != null) {
-            if (stand.getEquipment().getItemInMainHand().getItemMeta() != null) {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.RED + Objects.requireNonNull(stand.getEquipment().getItemInMainHand().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " supprimé !");
-            } else {
-                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.RED + Objects.requireNonNull(stand.getEquipment().getHelmet().getItemMeta()).getCustomModelData() + ChatColor.YELLOW + " supprimé !");
+
+            int customModelData = getArmorStandCustomModelData(stand);
+            if (customModelData != -1) {
+                player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.RED + customModelData + ChatColor.YELLOW + " supprimé !");
             }
+
             stand.remove();
             Utils.selectedStand.remove(uuid);
         } else {

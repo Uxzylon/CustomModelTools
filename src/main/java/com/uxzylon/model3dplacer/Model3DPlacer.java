@@ -14,6 +14,6 @@ public final class Model3DPlacer extends JavaPlugin {
         this.getLogger().info("Enabled!");
 
         getCommand("model3d").setExecutor(new model3dCommand());
-        getServer().getPluginManager().registerEvents(new moveMenuClick(), this);
+        getServer().getPluginManager().registerEvents(new moveMenuClick(), plugin);
     }
 }
