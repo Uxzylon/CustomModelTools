@@ -1,7 +1,7 @@
-package com.gmail.anthony17j.model3dplacer;
+package com.uxzylon.model3dplacer;
 
-import com.gmail.anthony17j.model3dplacer.Commands.*;
-import com.gmail.anthony17j.model3dplacer.Events.*;
+import com.uxzylon.model3dplacer.Commands.*;
+import com.uxzylon.model3dplacer.Events.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Model3DPlacer extends JavaPlugin {

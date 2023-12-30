@@ -1,47 +1,52 @@
-name: Model3DPlacer
-version: ${project.version}
-main: com.gmail.anthony17j.model3dplacer.Model3DPlacer
-api-version: 1.17
-authors: [ Uxzylon ]
-description: Permet de placer des modèles avec Custom Model Data Facilement
+main: ${PACKAGE}.${NAME}
+name: ${NAME}
+version: "${VERSION}"
+api-version: "1.16"
+author: Uxzylon
+description: Place Custom Model Data Easily
+commands:
+  model3d:
+    description: Place Custom Model Data Easily
+    usage: /<command> <fonction>
+    permission: model3dplacer.command
 permissions:
   model3dplacer.command.give:
-    description: Autorise fonction give
+    description: Allow give command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.move:
-    description: Autorise fonction move
+    description: Allow move command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.place:
-    description: Autorise fonction place
+    description: Allow place command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.remove:
-    description: Autorise fonction remove
+    description: Allow remove command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.select:
-    description: Autorise fonction select
+    description: Allow select command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.unselect:
-    description: Autorise fonction unselect
+    description: Allow unselect command
     default: op
     children:
       model3dplacer.command: true
   model3dplacer.command.switch:
-    description: Autorise fonction switch
+    description: Allow switch command
     default: op
     children:
       model3dplacer.command: true
-commands:
-  model3d:
-    description: Permet de placer des modèles avec Custom Model Data Facilement
-    usage: /<command> <fonction>
-    permission: model3dplacer.command
+  model3dplacer.*:
+    description: Grants all other permissions
+    default: false
+    children:
+      model3dplacer.command: true
