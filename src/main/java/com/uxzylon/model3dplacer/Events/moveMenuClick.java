@@ -1,9 +1,7 @@
 package com.uxzylon.model3dplacer.Events;
 
-import com.uxzylon.model3dplacer.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,17 +11,20 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 
+import static com.uxzylon.model3dplacer.Commands.SubCommand.selectedStand;
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+
 public class moveMenuClick implements Listener {
     @EventHandler
     public void onEvent(InventoryClickEvent e) {
-        if (e.getView().getTitle().equalsIgnoreCase(Utils.MoveMenu)) {
+        if (e.getView().getTitle().equalsIgnoreCase(Texts.MoveMenu.getText())) {
 
             if (e.getCurrentItem() == null) {
                 return;
             }
 
             Player player = (Player) e.getWhoClicked();
-            ArmorStand stand = Utils.selectedStand.get(player.getUniqueId());
+            ArmorStand stand = selectedStand.get(player.getUniqueId());
 
             ItemMeta itemMeta = e.getCurrentItem().getItemMeta();
             if (itemMeta == null) {
@@ -44,33 +45,31 @@ public class moveMenuClick implements Listener {
             EulerAngle headPose = stand.getHeadPose();
             EulerAngle pose = isMainHand ? armPose : headPose;
 
-            if (displayName.equalsIgnoreCase(Utils.MoveMenuUp)) {
+            if (displayName.equalsIgnoreCase(Texts.MoveMenuUp.getText())) {
                 standLocation.setX(standLocation.getX() + 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuDown)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuDown.getText())) {
                 standLocation.setX(standLocation.getX() - 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuLeft)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuLeft.getText())) {
                 standLocation.setZ(standLocation.getZ() - 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRight)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRight.getText())) {
                 standLocation.setZ(standLocation.getZ() + 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuWhiteUp)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuWhiteUp.getText())) {
                 standLocation.setY(standLocation.getY() + 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuWhiteDown)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuWhiteDown.getText())) {
                 standLocation.setY(standLocation.getY() - 0.1);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateLeft)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateLeft.getText())) {
                 standLocation.setYaw(standLocation.getYaw() - 10);
-                player.sendMessage(ChatColor.YELLOW + String.valueOf(stand.getLocation().getYaw()) + "°");
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateRight)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateRight.getText())) {
                 standLocation.setYaw(standLocation.getYaw() + 10);
-                player.sendMessage(ChatColor.YELLOW + String.valueOf(stand.getLocation().getYaw()) + "°");
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateRightSide)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateRightSide.getText())) {
                 pose = pose.subtract(0, 0, 0.02);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateLeftSide)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateLeftSide.getText())) {
                 pose = pose.add(0, 0, 0.02);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateFront)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateFront.getText())) {
                 pose = pose.add(0.02, 0, 0);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuRotateBack)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuRotateBack.getText())) {
                 pose = pose.subtract(0.02, 0, 0);
-            } else if (displayName.equalsIgnoreCase(Utils.MoveMenuExit)) {
+            } else if (displayName.equalsIgnoreCase(Texts.MoveMenuExit.getText())) {
                 player.closeInventory();
                 return;
             }

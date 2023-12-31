@@ -1,7 +1,6 @@
 package com.uxzylon.model3dplacer.Commands.subcommands;
 
 import com.uxzylon.model3dplacer.Commands.SubCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -11,10 +10,11 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
-import com.uxzylon.model3dplacer.Utils;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 
 public class place3dModel extends SubCommand {
 
@@ -25,7 +25,7 @@ public class place3dModel extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Place un CustomModelData";
+        return Texts.placeDescription.getText();
     }
 
     @Override
@@ -53,12 +53,12 @@ public class place3dModel extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        if (args.length > 1 && Utils.isInt(args[1])) {
+        if (args.length > 1 && isInt(args[1])) {
             double locationX = player.getLocation().getBlockX();
             int locationY = player.getLocation().getBlockY();
             double locationZ = player.getLocation().getBlockZ();
             int yaw;
-            switch (Utils.yawToFace(player.getLocation().getYaw())) {
+            switch (yawToFace(player.getLocation().getYaw())) {
                 case NORTH:
                     locationX = locationX + 0.125;
                     locationY = locationY - 1;
@@ -107,12 +107,12 @@ public class place3dModel extends SubCommand {
             standEquip.setItemInMainHand(item);
 
 
-            Utils.setSlotsDisabled(stand, true);
+            setSlotsDisabled(stand, true);
 
 
-            player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + args[1] + ChatColor.YELLOW + " placé !");
+            player.sendMessage(String.format(Texts.placed.getText(), args[1]));
         } else {
-            player.sendMessage(Utils.needId);
+            player.sendMessage(Texts.needId.getText());
         }
     }
 }

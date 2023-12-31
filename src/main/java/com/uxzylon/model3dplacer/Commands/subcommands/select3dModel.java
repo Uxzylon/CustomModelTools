@@ -1,16 +1,14 @@
 package com.uxzylon.model3dplacer.Commands.subcommands;
 
 import com.uxzylon.model3dplacer.Commands.SubCommand;
-import com.uxzylon.model3dplacer.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EntityEquipment;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 
 public class select3dModel extends SubCommand {
 
@@ -21,7 +19,7 @@ public class select3dModel extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Sélectionne le CustomModelData le plus proche";
+        return Texts.selectDescription.getText();
     }
 
     @Override
@@ -46,15 +44,15 @@ public class select3dModel extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        ArmorStand stand = Utils.getClosestModel(player);
+        ArmorStand stand = getClosestModel(player);
 
         if (stand != null) {
             UUID uuid = player.getUniqueId();
-            ArmorStand oldStand = Utils.selectedStand.get(uuid);
+            ArmorStand oldStand = selectedStand.get(uuid);
             if (oldStand != null) {
                 oldStand.setGlowing(false);
             }
-            Utils.selectedStand.put(uuid, stand);
+            selectedStand.put(uuid, stand);
             stand.setGlowing(true);
 
             int customModelData = getArmorStandCustomModelData(stand);
@@ -62,9 +60,9 @@ public class select3dModel extends SubCommand {
                 return;
             }
 
-            player.sendMessage(ChatColor.YELLOW + "Armor Stand avec CustomModelData " + ChatColor.GREEN + customModelData + ChatColor.YELLOW + " sélectionné !");
+            player.sendMessage(String.format(Texts.selected.getText(), customModelData));
         } else {
-            player.sendMessage(ChatColor.RED + "Aucun Armor Stand avec CustomModelData trouvé !");
+            player.sendMessage(Texts.noCustomModelDataFound.getText());
         }
     }
 }

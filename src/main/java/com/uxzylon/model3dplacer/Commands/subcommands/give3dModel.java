@@ -1,8 +1,6 @@
 package com.uxzylon.model3dplacer.Commands.subcommands;
 
 import com.uxzylon.model3dplacer.Commands.SubCommand;
-import com.uxzylon.model3dplacer.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +8,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 
 public class give3dModel extends SubCommand {
 
@@ -20,7 +20,7 @@ public class give3dModel extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Obtenez un CustomModelData dans votre inventaire";
+        return Texts.giveDescription.getText();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class give3dModel extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        if (args.length > 1 && Utils.isInt(args[1])) {
+        if (args.length > 1 && isInt(args[1])) {
             ItemStack item = new ItemStack(Material.CLOCK);
             ItemMeta meta = item.getItemMeta();
             if (meta == null) {
@@ -58,7 +58,7 @@ public class give3dModel extends SubCommand {
             item.setItemMeta(meta);
             player.getInventory().addItem(item);
         } else {
-            player.sendMessage(Utils.needId);
+            player.sendMessage(Texts.needId.getText());
         }
     }
 }

@@ -1,14 +1,17 @@
 package com.uxzylon.model3dplacer.Commands;
 
 import com.uxzylon.model3dplacer.Commands.subcommands.*;
-import com.uxzylon.model3dplacer.Model3DPlacer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.plugin;
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 
 public class model3dCommand implements TabExecutor {
 
@@ -28,7 +31,7 @@ public class model3dCommand implements TabExecutor {
     }
 
     public void help(Player player) {
-        player.sendMessage(ChatColor.YELLOW + "============" + ChatColor.GREEN + " Model3DPlacer " + ChatColor.YELLOW + "============");
+        player.sendMessage(Texts.Title.getText());
         for (int i=0; i < getSubCommands().size(); i++) {
             if (player.hasPermission(getSubCommands().get(i).permission())) {
                 player.sendMessage(getSubCommands().get(i).getSyntax() + " - " + ChatColor.GRAY + getSubCommands().get(i).getDescription());
@@ -37,9 +40,8 @@ public class model3dCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof  Player) {
-            Player player = (Player) sender;
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 boolean found = false;
                 for (int i=0; i < getSubCommands().size(); i++) {
@@ -48,7 +50,7 @@ public class model3dCommand implements TabExecutor {
                         if (player.hasPermission(getSubCommands().get(i).permission())) {
                             getSubCommands().get(i).perform(player, args);
                         } else {
-                            player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission!");
+                            player.sendMessage(Texts.noPermission.getText());
                         }
                     }
                 }
@@ -65,7 +67,7 @@ public class model3dCommand implements TabExecutor {
                         if (getSubCommands().get(i).canRunConsole()) {
                             getSubCommands().get(i).perform(null, args);
                         } else {
-                            Model3DPlacer.plugin.getLogger().info("Player Only!");
+                            plugin.getLogger().info(Texts.playerOnly.getText());
                         }
                     }
                 }
@@ -75,7 +77,7 @@ public class model3dCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         Player player = (Player) sender;
         if (args.length == 1) {
             ArrayList<String> subCommandsArguments = new ArrayList<>();

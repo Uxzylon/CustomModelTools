@@ -1,11 +1,7 @@
 package com.uxzylon.model3dplacer.Commands.subcommands;
 
 import com.uxzylon.model3dplacer.Commands.SubCommand;
-import com.uxzylon.model3dplacer.Utils;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
@@ -13,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 
 public class switch3dModel extends SubCommand {
 
@@ -23,7 +21,7 @@ public class switch3dModel extends SubCommand {
 
     @Override
     public String getDescription() {
-        return "Alterne entre Slot Main et Slot Tête";
+        return Texts.switchDescription.getText();
     }
 
     @Override
@@ -48,7 +46,7 @@ public class switch3dModel extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        ArmorStand stand = Utils.selectedStand.get(player.getUniqueId());
+        ArmorStand stand = selectedStand.get(player.getUniqueId());
         if (stand != null) {
             EntityEquipment equipment = stand.getEquipment();
             if (equipment == null) {
@@ -64,7 +62,7 @@ public class switch3dModel extends SubCommand {
                 stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
             }
         } else {
-            player.sendMessage(Utils.noSelection);
+            player.sendMessage(Texts.noSelection.getText());
         }
     }
 }
