@@ -1,18 +1,33 @@
 package com.uxzylon.model3dplacer;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.uxzylon.model3dplacer.Commands.*;
 import com.uxzylon.model3dplacer.Events.*;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.*;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 public final class Model3DPlacer extends JavaPlugin {
 
     public static Model3DPlacer plugin;
+    public static HashMap<Material, HashMap<Integer, String>> customModelDatas = new HashMap<>();
 
     @Override
     public void onEnable() {
         plugin = this;
 
         createConfig();
+        parseResourcePack();
 
         getCommand("model3d").setExecutor(new model3dCommand());
         getServer().getPluginManager().registerEvents(new moveMenuClick(), plugin);
@@ -22,6 +37,9 @@ public final class Model3DPlacer extends JavaPlugin {
 
     private void createConfig() {
         getConfig().options().copyDefaults(true);
+
+        getConfig().addDefault("ResourcePack.url", "https://plopsainmc.anthony-jeanney.fr/Plopsacraft-Pack-df25ba3fed7ebc1709ce18db5fc09c96700da254.zip");
+        getConfig().addDefault("ResourcePack.hash", "df25ba3fed7ebc1709ce18db5fc09c96700da254");
 
         addText("Title", "§6============ §aModel3DPlacer §6============");
 
@@ -108,5 +126,109 @@ public final class Model3DPlacer extends JavaPlugin {
         public String getText() {
             return plugin.getConfig().getString("Texts." + text);
         }
+    }
+
+    private void parseResourcePack() {
+        String url = getConfig().getString("ResourcePack.url");
+        if (url == null) {
+            return;
+        }
+
+        String fileName = "resourcePack.zip";
+        boolean needDownload = true;
+
+        plugin.getLogger().info("Initializing the resource pack file...");
+        File resourcePackFile = new File(getDataFolder(), fileName);
+        if (!resourcePackFile.exists()) {
+            resourcePackFile.getParentFile().mkdirs();
+            try {
+                resourcePackFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().warning("Failed to create the resource pack file!");
+                return;
+            }
+        } else {
+            // Check the hash
+            if (verifyHash(resourcePackFile)) {
+                plugin.getLogger().info("Resource pack hash verified!");
+                needDownload = false;
+            } else {
+                plugin.getLogger().warning("Resource pack hash verification failed!");
+            }
+        }
+
+        if (needDownload) {
+            // Download the file
+            plugin.getLogger().info("Downloading the resource pack...");
+            try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+                 FileOutputStream fileOutputStream = new FileOutputStream(resourcePackFile)) {
+
+                byte[] dataBuffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                    fileOutputStream.write(dataBuffer, 0, bytesRead);
+                }
+
+                if (!verifyHash(resourcePackFile)) {
+                    plugin.getLogger().warning("Failed to verify the resource pack hash!");
+                    return;
+                }
+                plugin.getLogger().info("Resource pack downloaded!");
+
+            } catch (IOException e) {
+                plugin.getLogger().warning("Failed to download the resource pack!");
+                return;
+            }
+        }
+
+        String targetDir = "assets/minecraft/models/item/";
+
+        // Unzip the file and parse the JSON files
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(resourcePackFile))) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (zipEntry.getName().startsWith(targetDir) && zipEntry.getName().endsWith(".json")) {
+                    // Parse the JSON file
+                    JsonElement fileElement = JsonParser.parseReader(new InputStreamReader(zis));
+                    JsonObject fileObject = fileElement.getAsJsonObject();
+                    JsonArray overrides = fileObject.getAsJsonArray("overrides");
+
+                    plugin.getLogger().info("Parsing " + zipEntry.getName());
+
+                    Material material = Material.getMaterial(zipEntry.getName().substring(targetDir.length(), zipEntry.getName().length() - 5).toUpperCase());
+
+                    for (JsonElement override : overrides) {
+                        JsonObject overrideObject = override.getAsJsonObject();
+                        JsonObject predicate = overrideObject.getAsJsonObject("predicate");
+                        String model = overrideObject.get("model").getAsString();
+
+                        int customModelData = predicate.get("custom_model_data").getAsInt();
+                        String modelName = model.substring(model.indexOf("/") + 1);
+
+                        // Add to the HashMap
+                        HashMap<Integer, String> customModelDataMap = customModelDatas.getOrDefault(material, new HashMap<>());
+                        customModelDataMap.put(customModelData, modelName);
+                        customModelDatas.put(material, customModelDataMap);
+                    }
+                }
+            }
+
+            plugin.getLogger().info("Resource pack parsed!");
+            customModelDatas.forEach((material, customModelDataMap) ->
+                    plugin.getLogger().info("  " + material.name() + " -> " + customModelDataMap.size() + " custom model datas"));
+
+        } catch (IOException e) {
+            plugin.getLogger().warning("Failed to parse the resource pack!");
+        }
+    }
+
+    private boolean verifyHash(File file) {
+        try {
+            String hash = sha1Hex(new FileInputStream(file));
+            if (hash.equals(getConfig().getString("ResourcePack.hash"))) {
+                return true;
+            }
+        } catch (IOException ignored) {}
+        return false;
     }
 }
