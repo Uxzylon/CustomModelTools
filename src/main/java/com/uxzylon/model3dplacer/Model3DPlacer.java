@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.uxzylon.model3dplacer.Commands.*;
 import com.uxzylon.model3dplacer.Events.*;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +21,7 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 public final class Model3DPlacer extends JavaPlugin {
 
     public static Model3DPlacer plugin;
-    public static HashMap<Material, HashMap<Integer, String>> customModelDatas = new HashMap<>();
+    public static HashMap<String, HashMap<String, Pair<Material, Integer>>> customModelDatas = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -193,9 +194,13 @@ public final class Model3DPlacer extends JavaPlugin {
                     JsonObject fileObject = fileElement.getAsJsonObject();
                     JsonArray overrides = fileObject.getAsJsonArray("overrides");
 
-                    plugin.getLogger().info("Parsing " + zipEntry.getName());
+                    // plugin.getLogger().info("Parsing " + zipEntry.getName());
 
                     Material material = Material.getMaterial(zipEntry.getName().substring(targetDir.length(), zipEntry.getName().length() - 5).toUpperCase());
+                    if (material == null) {
+                        plugin.getLogger().warning("Failed to get the material for " + zipEntry.getName());
+                        continue;
+                    }
 
                     for (JsonElement override : overrides) {
                         JsonObject overrideObject = override.getAsJsonObject();
@@ -203,19 +208,41 @@ public final class Model3DPlacer extends JavaPlugin {
                         String model = overrideObject.get("model").getAsString();
 
                         int customModelData = predicate.get("custom_model_data").getAsInt();
-                        String modelName = model.substring(model.indexOf("/") + 1);
+                        String[] modelParts = model.split("/");
+                        String category = modelParts.length > 1 ? modelParts[0] : "None";
+                        String modelName = modelParts.length > 1 ? modelParts[1] : modelParts[0];
+
+                        // If there is a ":" in the category, ignore the string before it
+                        if (category.contains(":")) {
+                            category = category.split(":")[1];
+                        }
+
+                        // If the model name already exists, append "_" followed by the item name
+                        if (customModelDatas.containsKey(category) && customModelDatas.get(category).containsKey(modelName)) {
+                            modelName = modelName + "_" + material.name();
+                        }
 
                         // Add to the HashMap
-                        HashMap<Integer, String> customModelDataMap = customModelDatas.getOrDefault(material, new HashMap<>());
-                        customModelDataMap.put(customModelData, modelName);
-                        customModelDatas.put(material, customModelDataMap);
+                        HashMap<String, Pair<Material, Integer>> categoryMap = customModelDatas.getOrDefault(category, new HashMap<>());
+                        categoryMap.put(modelName, Pair.of(material, customModelData));
+                        customModelDatas.put(category, categoryMap);
                     }
                 }
             }
 
             plugin.getLogger().info("Resource pack parsed!");
-            customModelDatas.forEach((material, customModelDataMap) ->
-                    plugin.getLogger().info("  " + material.name() + " -> " + customModelDataMap.size() + " custom model datas"));
+
+            if (!customModelDatas.isEmpty()) {
+                StringBuilder categories = new StringBuilder();
+                customModelDatas.forEach((category, modelMap) -> {
+                    categories.append(category).append(" (").append(modelMap.size()).append("), ");
+                });
+                plugin.getLogger().info(
+                        "Found " + customModelDatas.size() + " categories with " +
+                                customModelDatas.values().stream().mapToInt(HashMap::size).sum() + " models -> " +
+                                categories.substring(0, categories.length() - 2)
+                );
+            }
 
         } catch (IOException e) {
             plugin.getLogger().warning("Failed to parse the resource pack!");
