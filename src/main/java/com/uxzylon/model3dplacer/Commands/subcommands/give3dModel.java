@@ -5,10 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;

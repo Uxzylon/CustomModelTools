@@ -8,11 +8,13 @@ import com.uxzylon.model3dplacer.Commands.*;
 import com.uxzylon.model3dplacer.Events.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -22,6 +24,7 @@ public final class Model3DPlacer extends JavaPlugin {
 
     public static Model3DPlacer plugin;
     public static HashMap<String, HashMap<String, Pair<Material, Integer>>> customModelDatas = new HashMap<>();
+    public static HashMap<UUID, ArmorStand> selectedStand = new HashMap<>();
 
     @Override
     public void onEnable() {

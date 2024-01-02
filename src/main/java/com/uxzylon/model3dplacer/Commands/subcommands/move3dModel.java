@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
 
 public class move3dModel extends SubCommand {
 

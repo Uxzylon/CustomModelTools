@@ -11,8 +11,8 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 
-import static com.uxzylon.model3dplacer.Commands.SubCommand.selectedStand;
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
 
 public class moveMenuClick implements Listener {
     @EventHandler

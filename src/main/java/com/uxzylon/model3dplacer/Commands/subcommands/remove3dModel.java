@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
 
 public class remove3dModel extends SubCommand {
 

@@ -31,8 +31,6 @@ public abstract class SubCommand {
     public abstract List<String> getSubcommandArguments(Player player, String[] args);
     public abstract void perform(Player player, String[] args);
 
-    public static HashMap<UUID, ArmorStand> selectedStand = new HashMap<>();
-
     public List<String> getArgsCategoryModel(String[] args) {
         if (args.length == 2) {
             return new ArrayList<>(customModelDatas.keySet());
