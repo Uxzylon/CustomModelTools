@@ -1,6 +1,6 @@
-package com.uxzylon.model3dplacer.Commands.subcommands;
+package com.uxzylon.custommodeltools.Commands.subcommands;
 
-import com.uxzylon.model3dplacer.Commands.SubCommand;
+import com.uxzylon.custommodeltools.Commands.SubCommand;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,8 +13,8 @@ import org.bukkit.util.EulerAngle;
 
 import java.util.List;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.ResourcePack.customModelDatas;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
 
 public class place3dModel extends SubCommand {
 
@@ -35,7 +35,7 @@ public class place3dModel extends SubCommand {
 
     @Override
     public String permission() {
-        return "model3dplacer.command.place";
+        return "custommodeltools.command.place";
     }
 
     @Override

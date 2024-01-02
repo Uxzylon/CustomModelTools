@@ -1,28 +1,16 @@
-package com.uxzylon.model3dplacer;
+package com.uxzylon.custommodeltools;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.uxzylon.model3dplacer.Commands.*;
-import com.uxzylon.model3dplacer.Events.*;
-import org.apache.commons.lang3.tuple.Pair;
-import org.bukkit.Material;
+import com.uxzylon.custommodeltools.Commands.*;
+import com.uxzylon.custommodeltools.Events.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
+public final class CustomModelTools extends JavaPlugin {
 
-public final class Model3DPlacer extends JavaPlugin {
-
-    public static Model3DPlacer plugin;
+    public static CustomModelTools plugin;
     public static HashMap<UUID, ArmorStand> selectedStand = new HashMap<>();
     public static ResourcePack resourcePack;
 
@@ -49,7 +37,7 @@ public final class Model3DPlacer extends JavaPlugin {
         getConfig().addDefault("ResourcePack.hash", "df25ba3fed7ebc1709ce18db5fc09c96700da254");
         getConfig().addDefault("ResourcePack.kickOnFail", true);
 
-        addText("Title", "§6============ §aModel3DPlacer §6============");
+        addText("Title", "§6============ §aCustomModelTools §6============");
 
         addText("giveDescription", "Obtenez un CustomModelData dans votre inventaire");
         addText("moveDescription", "Déplacez votre selection");

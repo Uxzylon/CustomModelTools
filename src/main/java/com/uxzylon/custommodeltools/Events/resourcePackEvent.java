@@ -1,16 +1,15 @@
-package com.uxzylon.model3dplacer.Events;
+package com.uxzylon.custommodeltools.Events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.plugin;
-import static com.uxzylon.model3dplacer.Model3DPlacer.resourcePack;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
+import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
 public class resourcePackEvent implements Listener {
 

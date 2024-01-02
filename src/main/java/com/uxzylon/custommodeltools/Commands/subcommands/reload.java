@@ -1,15 +1,15 @@
-package com.uxzylon.model3dplacer.Commands.subcommands;
+package com.uxzylon.custommodeltools.Commands.subcommands;
 
-import com.uxzylon.model3dplacer.Commands.SubCommand;
+import com.uxzylon.custommodeltools.Commands.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.plugin;
-import static com.uxzylon.model3dplacer.Model3DPlacer.resourcePack;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
+import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
 public class reload extends SubCommand {
     @Override
@@ -29,7 +29,7 @@ public class reload extends SubCommand {
 
     @Override
     public String permission() {
-        return "model3dplacer.command.reload";
+        return "custommodeltools.command.reload";
     }
 
     @Override

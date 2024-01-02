@@ -5,7 +5,7 @@ plugins {
     id 'java'
 }
 
-group = "com.uxzylon.model3dplacer"
+group = "com.uxzylon.custommodeltools"
 
 static def getTime() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-HHmm")

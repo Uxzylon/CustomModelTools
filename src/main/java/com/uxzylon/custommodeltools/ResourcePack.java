@@ -1,4 +1,4 @@
-package com.uxzylon.model3dplacer;
+package com.uxzylon.custommodeltools;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
-import static com.uxzylon.model3dplacer.Model3DPlacer.plugin;
+import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
 
 public class ResourcePack {
     private String url;

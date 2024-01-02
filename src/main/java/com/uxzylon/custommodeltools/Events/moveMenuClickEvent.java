@@ -1,4 +1,4 @@
-package com.uxzylon.model3dplacer.Events;
+package com.uxzylon.custommodeltools.Events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,8 +11,8 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.selectedStand;
 
 public class moveMenuClickEvent implements Listener {
     @EventHandler

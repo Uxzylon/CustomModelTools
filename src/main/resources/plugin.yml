@@ -8,50 +8,50 @@ commands:
   model3d:
     description: Place Custom Model Data Easily
     usage: /<command> <fonction>
-    permission: model3dplacer.command
+    permission: custommodeltools.command
 permissions:
-  model3dplacer.command.give:
+  custommodeltools.command.give:
     description: Allow give command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.move:
+      custommodeltools.command: true
+  custommodeltools.command.move:
     description: Allow move command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.place:
+      custommodeltools.command: true
+  custommodeltools.command.place:
     description: Allow place command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.remove:
+      custommodeltools.command: true
+  custommodeltools.command.remove:
     description: Allow remove command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.select:
+      custommodeltools.command: true
+  custommodeltools.command.select:
     description: Allow select command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.unselect:
+      custommodeltools.command: true
+  custommodeltools.command.unselect:
     description: Allow unselect command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.switch:
+      custommodeltools.command: true
+  custommodeltools.command.switch:
     description: Allow switch command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.command.reload:
+      custommodeltools.command: true
+  custommodeltools.command.reload:
     description: Allow reload command
     default: op
     children:
-      model3dplacer.command: true
-  model3dplacer.*:
+      custommodeltools.command: true
+  custommodeltools.*:
     description: Grants all other permissions
     default: false
     children:
-      model3dplacer.command: true
+      custommodeltools.command: true

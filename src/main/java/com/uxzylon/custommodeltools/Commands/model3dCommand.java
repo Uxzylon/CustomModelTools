@@ -1,6 +1,6 @@
-package com.uxzylon.model3dplacer.Commands;
+package com.uxzylon.custommodeltools.Commands;
 
-import com.uxzylon.model3dplacer.Commands.subcommands.*;
+import com.uxzylon.custommodeltools.Commands.subcommands.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.plugin;
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
 
 public class model3dCommand implements TabExecutor {
 

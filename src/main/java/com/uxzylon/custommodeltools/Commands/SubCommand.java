@@ -1,8 +1,8 @@
-package com.uxzylon.model3dplacer.Commands;
+package com.uxzylon.custommodeltools.Commands;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import com.uxzylon.model3dplacer.Model3DPlacer;
+import com.uxzylon.custommodeltools.CustomModelTools;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.uxzylon.model3dplacer.ResourcePack.customModelDatas;
+import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
 
 public abstract class SubCommand {
     public abstract String getName();
@@ -91,9 +91,9 @@ public abstract class SubCommand {
         String message;
         Triple<String, String, String> modelInfo = getModelInfoFromCustomModelData(customModelData);
         if (modelInfo != null) {
-            message = String.format(Model3DPlacer.Texts.modelMessage.getText(), modelInfo.getLeft(), modelInfo.getMiddle(), modelInfo.getRight(), customModelData);
+            message = String.format(CustomModelTools.Texts.modelMessage.getText(), modelInfo.getLeft(), modelInfo.getMiddle(), modelInfo.getRight(), customModelData);
         } else {
-            message = String.format(Model3DPlacer.Texts.modelMessage.getText(), "Unknown", "Unknown", getArmorStandItem(stand).getType(), customModelData);
+            message = String.format(CustomModelTools.Texts.modelMessage.getText(), "Unknown", "Unknown", getArmorStandItem(stand).getType(), customModelData);
         }
         return message;
     }

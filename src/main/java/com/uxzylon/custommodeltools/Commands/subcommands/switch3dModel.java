@@ -1,6 +1,6 @@
-package com.uxzylon.model3dplacer.Commands.subcommands;
+package com.uxzylon.custommodeltools.Commands.subcommands;
 
-import com.uxzylon.model3dplacer.Commands.SubCommand;
+import com.uxzylon.custommodeltools.Commands.SubCommand;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
+import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.selectedStand;
 
 public class switch3dModel extends SubCommand {
 
@@ -32,7 +32,7 @@ public class switch3dModel extends SubCommand {
 
     @Override
     public String permission() {
-        return "model3dplacer.command.switch";
+        return "custommodeltools.command.switch";
     }
 
     @Override
