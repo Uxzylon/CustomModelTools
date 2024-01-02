@@ -58,6 +58,7 @@ public final class Model3DPlacer extends JavaPlugin {
         addText("selectDescription", "Sélectionne le CustomModelData le plus proche");
         addText("switchDescription", "Alterne entre Slot Main et Slot Tête");
         addText("unselectDescription", "Désélectionne votre selection");
+        addText("reloadDescription", "Recharge le plugin");
 
         addText("modelMessage", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) ");
         addText("noSelection", "§6Vous n'avez pas de selection ! §d/model3d select");
@@ -72,6 +73,7 @@ public final class Model3DPlacer extends JavaPlugin {
         addText("noCustomModelDataFound", "§cAucun Armor Stand avec CustomModelData trouvé !");
         addText("notFoundModel", "§cModèle non trouvé !");
         addText("wrongSyntax", "§cMauvaise syntaxe ! §d%s");
+        addText("reloadedPack", "§6Resource Pack rechargé !");
 
         addText("MoveMenu", "§cMenu déplacement §2Par Uxzylon");
         addText("MoveMenuUp", "§aAVANT");
@@ -98,8 +100,8 @@ public final class Model3DPlacer extends JavaPlugin {
 
     public enum Texts {
         Title, giveDescription, moveDescription, placeDescription, removeDescription, selectDescription,
-        switchDescription, unselectDescription, modelMessage, noSelection, noPermission, playerOnly, unselected,
-        selected, removed, placed, given, switched, noCustomModelDataFound, notFoundModel, wrongSyntax, MoveMenu,
+        switchDescription, unselectDescription, reloadDescription, modelMessage, noSelection, noPermission, playerOnly, unselected,
+        selected, removed, placed, given, switched, noCustomModelDataFound, notFoundModel, wrongSyntax, reloadedPack, MoveMenu,
         MoveMenuUp, MoveMenuDown, MoveMenuLeft, MoveMenuRight, MoveMenuWhiteUp, MoveMenuWhiteDown, MoveMenuRotateLeft,
         MoveMenuRotateRight, MoveMenuRotateRightSide, MoveMenuRotateLeftSide, MoveMenuRotateFront, MoveMenuRotateBack,
         MoveMenuExit;

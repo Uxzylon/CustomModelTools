@@ -24,6 +24,7 @@ public class model3dCommand implements TabExecutor {
         subCommands.add(new select3dModel());
         subCommands.add(new unselect3dModel());
         subCommands.add(new switch3dModel());
+        subCommands.add(new reload());
     }
 
     public ArrayList<SubCommand> getSubCommands() {

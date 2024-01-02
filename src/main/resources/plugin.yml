@@ -45,6 +45,11 @@ permissions:
     default: op
     children:
       model3dplacer.command: true
+  model3dplacer.command.reload:
+    description: Allow reload command
+    default: op
+    children:
+      model3dplacer.command: true
   model3dplacer.*:
     description: Grants all other permissions
     default: false

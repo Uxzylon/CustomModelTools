@@ -42,6 +42,8 @@ public class ResourcePack {
             return;
         }
 
+        customModelDatas.clear();
+
         String fileName = "resourcePack.zip";
         boolean needDownload = true;
 
