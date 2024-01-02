@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.customModelDatas;
+import static com.uxzylon.model3dplacer.ResourcePack.customModelDatas;
 
 public class give3dModel extends SubCommand {
 

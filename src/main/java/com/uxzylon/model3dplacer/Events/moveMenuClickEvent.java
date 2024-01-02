@@ -14,7 +14,7 @@ import org.bukkit.util.EulerAngle;
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
 import static com.uxzylon.model3dplacer.Model3DPlacer.selectedStand;
 
-public class moveMenuClick implements Listener {
+public class moveMenuClickEvent implements Listener {
     @EventHandler
     public void onEvent(InventoryClickEvent e) {
         if (e.getView().getTitle().equalsIgnoreCase(Texts.MoveMenu.getText())) {

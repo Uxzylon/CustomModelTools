@@ -23,18 +23,21 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 public final class Model3DPlacer extends JavaPlugin {
 
     public static Model3DPlacer plugin;
-    public static HashMap<String, HashMap<String, Pair<Material, Integer>>> customModelDatas = new HashMap<>();
     public static HashMap<UUID, ArmorStand> selectedStand = new HashMap<>();
+    public static ResourcePack resourcePack;
 
     @Override
     public void onEnable() {
         plugin = this;
 
         createConfig();
-        parseResourcePack();
+
+        resourcePack = new ResourcePack();
 
         getCommand("model3d").setExecutor(new model3dCommand());
-        getServer().getPluginManager().registerEvents(new moveMenuClick(), plugin);
+
+        getServer().getPluginManager().registerEvents(new moveMenuClickEvent(), plugin);
+        getServer().getPluginManager().registerEvents(new resourcePackEvent(), plugin);
 
         plugin.getLogger().info("Enabled!");
     }
@@ -44,6 +47,7 @@ public final class Model3DPlacer extends JavaPlugin {
 
         getConfig().addDefault("ResourcePack.url", "https://plopsainmc.anthony-jeanney.fr/Plopsacraft-Pack-df25ba3fed7ebc1709ce18db5fc09c96700da254.zip");
         getConfig().addDefault("ResourcePack.hash", "df25ba3fed7ebc1709ce18db5fc09c96700da254");
+        getConfig().addDefault("ResourcePack.kickOnFail", true);
 
         addText("Title", "§6============ §aModel3DPlacer §6============");
 
@@ -109,130 +113,5 @@ public final class Model3DPlacer extends JavaPlugin {
         public String getText() {
             return plugin.getConfig().getString("Texts." + text);
         }
-    }
-
-    private void parseResourcePack() {
-        String url = getConfig().getString("ResourcePack.url");
-        if (url == null) {
-            return;
-        }
-
-        String fileName = "resourcePack.zip";
-        boolean needDownload = true;
-
-        plugin.getLogger().info("Initializing the resource pack file...");
-        File resourcePackFile = new File(getDataFolder(), fileName);
-        if (!resourcePackFile.exists()) {
-            resourcePackFile.getParentFile().mkdirs();
-            try {
-                resourcePackFile.createNewFile();
-            } catch (IOException e) {
-                plugin.getLogger().warning("Failed to create the resource pack file!");
-                return;
-            }
-        } else {
-            // Check the hash
-            if (verifyHash(resourcePackFile)) {
-                plugin.getLogger().info("Resource pack hash verified!");
-                needDownload = false;
-            } else {
-                plugin.getLogger().warning("Resource pack hash verification failed!");
-            }
-        }
-
-        if (needDownload) {
-            // Download the file
-            plugin.getLogger().info("Downloading the resource pack...");
-            try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-                 FileOutputStream fileOutputStream = new FileOutputStream(resourcePackFile)) {
-
-                byte[] dataBuffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                    fileOutputStream.write(dataBuffer, 0, bytesRead);
-                }
-
-                if (!verifyHash(resourcePackFile)) {
-                    plugin.getLogger().warning("Failed to verify the resource pack hash!");
-                    return;
-                }
-                plugin.getLogger().info("Resource pack downloaded!");
-
-            } catch (IOException e) {
-                plugin.getLogger().warning("Failed to download the resource pack!");
-                return;
-            }
-        }
-
-        String targetDir = "assets/minecraft/models/item/";
-
-        // Unzip the file and parse the JSON files
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(resourcePackFile))) {
-            ZipEntry zipEntry;
-            while ((zipEntry = zis.getNextEntry()) != null) {
-                if (zipEntry.getName().startsWith(targetDir) && zipEntry.getName().endsWith(".json")) {
-                    // Parse the JSON file
-                    JsonElement fileElement = JsonParser.parseReader(new InputStreamReader(zis));
-                    JsonObject fileObject = fileElement.getAsJsonObject();
-                    JsonArray overrides = fileObject.getAsJsonArray("overrides");
-
-                    // plugin.getLogger().info("Parsing " + zipEntry.getName());
-
-                    Material material = Material.getMaterial(zipEntry.getName().substring(targetDir.length(), zipEntry.getName().length() - 5).toUpperCase());
-                    if (material == null) {
-                        plugin.getLogger().warning("Failed to get the material for " + zipEntry.getName());
-                        continue;
-                    }
-
-                    for (JsonElement override : overrides) {
-                        JsonObject overrideObject = override.getAsJsonObject();
-                        JsonObject predicate = overrideObject.getAsJsonObject("predicate");
-                        String model = overrideObject.get("model").getAsString();
-
-                        int customModelData = predicate.get("custom_model_data").getAsInt();
-                        String[] modelParts = model.split("/");
-                        String category = modelParts.length > 1 ? modelParts[0] : "None";
-                        String modelName = modelParts.length > 1 ? modelParts[1] : modelParts[0];
-
-                        // If there is a ":" in the category, ignore the string before it
-                        if (category.contains(":")) {
-                            category = category.split(":")[1];
-                        }
-
-                        // Add to the HashMap
-                        HashMap<String, Pair<Material, Integer>> categoryMap = customModelDatas.getOrDefault(category, new HashMap<>());
-                        categoryMap.put(modelName, Pair.of(material, customModelData));
-                        customModelDatas.put(category, categoryMap);
-                    }
-                }
-            }
-
-            plugin.getLogger().info("Resource pack parsed!");
-
-            if (!customModelDatas.isEmpty()) {
-                StringBuilder categories = new StringBuilder();
-                customModelDatas.forEach((category, modelMap) -> {
-                    categories.append(category).append(" (").append(modelMap.size()).append("), ");
-                });
-                plugin.getLogger().info(
-                        "Found " + customModelDatas.size() + " categories with " +
-                                customModelDatas.values().stream().mapToInt(HashMap::size).sum() + " models -> " +
-                                categories.substring(0, categories.length() - 2)
-                );
-            }
-
-        } catch (IOException e) {
-            plugin.getLogger().warning("Failed to parse the resource pack!");
-        }
-    }
-
-    private boolean verifyHash(File file) {
-        try {
-            String hash = sha1Hex(new FileInputStream(file));
-            if (hash.equals(getConfig().getString("ResourcePack.hash"))) {
-                return true;
-            }
-        } catch (IOException ignored) {}
-        return false;
     }
 }

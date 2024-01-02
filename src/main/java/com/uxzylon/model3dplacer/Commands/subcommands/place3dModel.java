@@ -14,7 +14,7 @@ import org.bukkit.util.EulerAngle;
 import java.util.List;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
-import static com.uxzylon.model3dplacer.Model3DPlacer.customModelDatas;
+import static com.uxzylon.model3dplacer.ResourcePack.customModelDatas;
 
 public class place3dModel extends SubCommand {
 

@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.uxzylon.model3dplacer.Model3DPlacer.customModelDatas;
+import static com.uxzylon.model3dplacer.ResourcePack.customModelDatas;
 
 public abstract class SubCommand {
     public abstract String getName();
