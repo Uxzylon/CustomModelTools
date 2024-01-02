@@ -1,15 +1,18 @@
 package com.uxzylon.model3dplacer.Commands.subcommands;
 
 import com.uxzylon.model3dplacer.Commands.SubCommand;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.uxzylon.model3dplacer.Model3DPlacer.Texts;
+import static com.uxzylon.model3dplacer.Model3DPlacer.customModelDatas;
 
 public class give3dModel extends SubCommand {
 
@@ -25,7 +28,7 @@ public class give3dModel extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/model3d give <id>";
+        return "/model3d give <category> <model>";
     }
 
     @Override
@@ -40,25 +43,25 @@ public class give3dModel extends SubCommand {
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
-        if (args.length == 2) {
-            return Collections.singletonList("<id>");
-        }
-        return Collections.emptyList();
+        return getArgsCategoryModel(args);
     }
 
     @Override
     public void perform(Player player, String[] args) {
-        if (args.length > 1 && isInt(args[1])) {
-            ItemStack item = new ItemStack(Material.CLOCK);
-            ItemMeta meta = item.getItemMeta();
-            if (meta == null) {
+        if (args.length > 2 && args[1] != null && args[2] != null) {
+
+            ItemStack item = getItemFromCategoryModel(args[1], args[2]);
+            if (item == null) {
+                player.sendMessage(String.format(Texts.notFoundModel.getText(), getSyntax()));
                 return;
             }
-            meta.setCustomModelData(Integer.valueOf(args[1]));
-            item.setItemMeta(meta);
+
             player.getInventory().addItem(item);
+
+            Pair<Material, Integer> material = customModelDatas.get(args[1]).get(args[2]);
+            player.sendMessage(String.format(Texts.given.getText(), args[2], args[1], material.getLeft(), material.getRight()));
         } else {
-            player.sendMessage(Texts.needId.getText());
+            player.sendMessage(String.format(Texts.wrongSyntax.getText(), getSyntax()));
         }
     }
 }

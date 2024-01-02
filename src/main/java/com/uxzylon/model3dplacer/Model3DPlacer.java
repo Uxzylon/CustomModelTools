@@ -59,8 +59,11 @@ public final class Model3DPlacer extends JavaPlugin {
         addText("unselected", "§6Armor Stand avec CustomModelData §a%s §6désélectionné !");
         addText("selected", "§6Armor Stand avec CustomModelData §a%s §6sélectionné !");
         addText("removed", "§6Armor Stand avec CustomModelData §a%s §6supprimé !");
-        addText("placed", "§6Armor Stand avec CustomModelData §a%s §6placé !");
+        addText("placed", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) placé !");
+        addText("given", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) donné !");
         addText("noCustomModelDataFound", "§cAucun Armor Stand avec CustomModelData trouvé !");
+        addText("notFoundModel", "§cModèle non trouvé !");
+        addText("wrongSyntax", "§cMauvaise syntaxe ! §d%s");
 
         addText("MoveMenu", "§cMenu déplacement §2Par Uxzylon");
         addText("MoveMenuUp", "§aAVANT");
@@ -102,7 +105,10 @@ public final class Model3DPlacer extends JavaPlugin {
         selected,
         removed,
         placed,
+        given,
         noCustomModelDataFound,
+        notFoundModel,
+        wrongSyntax,
         MoveMenu,
         MoveMenuUp,
         MoveMenuDown,
@@ -215,11 +221,6 @@ public final class Model3DPlacer extends JavaPlugin {
                         // If there is a ":" in the category, ignore the string before it
                         if (category.contains(":")) {
                             category = category.split(":")[1];
-                        }
-
-                        // If the model name already exists, append "_" followed by the item name
-                        if (customModelDatas.containsKey(category) && customModelDatas.get(category).containsKey(modelName)) {
-                            modelName = modelName + "_" + material.name();
                         }
 
                         // Add to the HashMap

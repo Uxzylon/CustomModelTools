@@ -2,6 +2,7 @@ package com.uxzylon.model3dplacer.Commands;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -15,12 +16,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.uxzylon.model3dplacer.Model3DPlacer.customModelDatas;
 
 public abstract class SubCommand {
     public abstract String getName();
@@ -32,6 +32,35 @@ public abstract class SubCommand {
     public abstract void perform(Player player, String[] args);
 
     public static HashMap<UUID, ArmorStand> selectedStand = new HashMap<>();
+
+    public List<String> getArgsCategoryModel(String[] args) {
+        if (args.length == 2) {
+            return new ArrayList<>(customModelDatas.keySet());
+        } else if (args.length == 3) {
+            if (customModelDatas.containsKey(args[1])) {
+                return new ArrayList<>(customModelDatas.get(args[1]).keySet());
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public ItemStack getItemFromCategoryModel(String category, String model) {
+        if (!customModelDatas.containsKey(category) || !customModelDatas.get(category).containsKey(model)) {
+            return null;
+        }
+
+        Pair<Material, Integer> pair = customModelDatas.get(category).get(model);
+        ItemStack item = new ItemStack(pair.getLeft());
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return null;
+        }
+        meta.setCustomModelData(pair.getRight());
+        meta.setDisplayName(model);
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
     public int getArmorStandCustomModelData(ArmorStand stand) {
         EntityEquipment equipment = stand.getEquipment();
