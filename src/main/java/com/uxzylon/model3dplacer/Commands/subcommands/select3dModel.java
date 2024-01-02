@@ -61,7 +61,7 @@ public class select3dModel extends SubCommand {
                 return;
             }
 
-            player.sendMessage(String.format(Texts.selected.getText(), customModelData));
+            player.sendMessage(getConfirmMessage(customModelData, stand) + Texts.selected.getText());
         } else {
             player.sendMessage(Texts.noCustomModelDataFound.getText());
         }

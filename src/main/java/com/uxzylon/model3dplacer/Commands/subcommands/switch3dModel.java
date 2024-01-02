@@ -55,13 +55,18 @@ public class switch3dModel extends SubCommand {
             }
             ItemStack itemHand = equipment.getItemInMainHand();
             ItemStack itemHead = stand.getEquipment().getHelmet();
+            String slot = "Hand";
             if (itemHand.getItemMeta() != null) {
                 stand.getEquipment().setHelmet(itemHand);
                 stand.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
+                slot = "Head";
             } else {
                 stand.getEquipment().setItemInMainHand(itemHead);
                 stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
             }
+
+            int customModelData = getArmorStandCustomModelData(stand);
+            player.sendMessage(getConfirmMessage(customModelData, stand) + String.format(Texts.switched.getText(), slot));
         } else {
             player.sendMessage(Texts.noSelection.getText());
         }

@@ -51,7 +51,7 @@ public class remove3dModel extends SubCommand {
 
             int customModelData = getArmorStandCustomModelData(stand);
             if (customModelData != -1) {
-                player.sendMessage(String.format(Texts.removed.getText(), customModelData));
+                player.sendMessage(getConfirmMessage(customModelData, stand) + Texts.removed.getText());
             }
 
             stand.remove();

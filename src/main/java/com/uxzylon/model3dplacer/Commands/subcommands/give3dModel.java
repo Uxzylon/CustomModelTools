@@ -56,7 +56,7 @@ public class give3dModel extends SubCommand {
             player.getInventory().addItem(item);
 
             Pair<Material, Integer> material = customModelDatas.get(args[1]).get(args[2]);
-            player.sendMessage(String.format(Texts.given.getText(), args[2], args[1], material.getLeft(), material.getRight()));
+            player.sendMessage(String.format(Texts.modelMessage.getText(), args[2], args[1], material.getLeft(), material.getRight()) + Texts.given.getText());
         } else {
             player.sendMessage(String.format(Texts.wrongSyntax.getText(), getSyntax()));
         }

@@ -2,7 +2,9 @@ package com.uxzylon.model3dplacer.Commands;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.uxzylon.model3dplacer.Model3DPlacer;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -58,6 +60,42 @@ public abstract class SubCommand {
         item.setItemMeta(meta);
 
         return item;
+    }
+
+    public Triple<String, String, String> getModelInfoFromCustomModelData(int customModelData) {
+        for (Map.Entry<String, HashMap<String, Pair<Material, Integer>>> entry : customModelDatas.entrySet()) {
+            for (Map.Entry<String, Pair<Material, Integer>> entry2 : entry.getValue().entrySet()) {
+                if (entry2.getValue().getRight() == customModelData) {
+                    return Triple.of(entry2.getKey(), entry.getKey(), entry2.getValue().getLeft().toString());
+                }
+            }
+        }
+        return null;
+    }
+
+    public ItemStack getArmorStandItem(ArmorStand stand) {
+        EntityEquipment equipment = stand.getEquipment();
+        if (equipment == null) {
+            return null;
+        }
+        ItemStack itemHand = equipment.getItemInMainHand();
+        ItemStack itemHead = stand.getEquipment().getHelmet();
+        if (itemHand.getItemMeta() != null) {
+            return itemHand;
+        } else {
+            return itemHead;
+        }
+    }
+
+    public String getConfirmMessage(int customModelData, ArmorStand stand) {
+        String message;
+        Triple<String, String, String> modelInfo = getModelInfoFromCustomModelData(customModelData);
+        if (modelInfo != null) {
+            message = String.format(Model3DPlacer.Texts.modelMessage.getText(), modelInfo.getLeft(), modelInfo.getMiddle(), modelInfo.getRight(), customModelData);
+        } else {
+            message = String.format(Model3DPlacer.Texts.modelMessage.getText(), "Unknown", "Unknown", getArmorStandItem(stand).getType(), customModelData);
+        }
+        return message;
     }
 
     public int getArmorStandCustomModelData(ArmorStand stand) {

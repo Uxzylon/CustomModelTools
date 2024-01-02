@@ -109,7 +109,7 @@ public class place3dModel extends SubCommand {
             setSlotsDisabled(stand, true);
 
             Pair<Material, Integer> material = customModelDatas.get(args[1]).get(args[2]);
-            player.sendMessage(String.format(Texts.placed.getText(), args[2], args[1], material.getLeft(), material.getRight()));
+            player.sendMessage(String.format(Texts.modelMessage.getText(), args[2], args[1], material.getLeft(), material.getRight()) + Texts.placed.getText());
         } else {
             player.sendMessage(String.format(Texts.wrongSyntax.getText(), getSyntax()));
         }

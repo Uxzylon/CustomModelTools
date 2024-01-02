@@ -55,15 +55,16 @@ public final class Model3DPlacer extends JavaPlugin {
         addText("switchDescription", "Alterne entre Slot Main et Slot Tête");
         addText("unselectDescription", "Désélectionne votre selection");
 
+        addText("modelMessage", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) ");
         addText("noSelection", "§6Vous n'avez pas de selection ! §d/model3d select");
         addText("noPermission", "§cVous n'avez pas la permission !");
         addText("playerOnly", "Player Only!");
-        addText("needId", "§cVous devez fournir un Id CustomModelData");
-        addText("unselected", "§6Armor Stand avec CustomModelData §a%s §6désélectionné !");
-        addText("selected", "§6Armor Stand avec CustomModelData §a%s §6sélectionné !");
-        addText("removed", "§6Armor Stand avec CustomModelData §a%s §6supprimé !");
-        addText("placed", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) placé !");
-        addText("given", "§6Modèle §a%s §6de §a%s §6(§a%s§6,§a%d§6) donné !");
+        addText("unselected", "§6désélectionné !");
+        addText("selected", "§6sélectionné !");
+        addText("removed", "§6supprimé !");
+        addText("placed", "§6placé !");
+        addText("given", "§6donné !");
+        addText("switched", "§6switched to §a%s§6 slot !");
         addText("noCustomModelDataFound", "§cAucun Armor Stand avec CustomModelData trouvé !");
         addText("notFoundModel", "§cModèle non trouvé !");
         addText("wrongSyntax", "§cMauvaise syntaxe ! §d%s");
@@ -92,39 +93,11 @@ public final class Model3DPlacer extends JavaPlugin {
     }
 
     public enum Texts {
-        Title,
-        giveDescription,
-        moveDescription,
-        placeDescription,
-        removeDescription,
-        selectDescription,
-        switchDescription,
-        unselectDescription,
-        noSelection,
-        noPermission,
-        playerOnly,
-        needId,
-        unselected,
-        selected,
-        removed,
-        placed,
-        given,
-        noCustomModelDataFound,
-        notFoundModel,
-        wrongSyntax,
-        MoveMenu,
-        MoveMenuUp,
-        MoveMenuDown,
-        MoveMenuLeft,
-        MoveMenuRight,
-        MoveMenuWhiteUp,
-        MoveMenuWhiteDown,
-        MoveMenuRotateLeft,
-        MoveMenuRotateRight,
-        MoveMenuRotateRightSide,
-        MoveMenuRotateLeftSide,
-        MoveMenuRotateFront,
-        MoveMenuRotateBack,
+        Title, giveDescription, moveDescription, placeDescription, removeDescription, selectDescription,
+        switchDescription, unselectDescription, modelMessage, noSelection, noPermission, playerOnly, unselected,
+        selected, removed, placed, given, switched, noCustomModelDataFound, notFoundModel, wrongSyntax, MoveMenu,
+        MoveMenuUp, MoveMenuDown, MoveMenuLeft, MoveMenuRight, MoveMenuWhiteUp, MoveMenuWhiteDown, MoveMenuRotateLeft,
+        MoveMenuRotateRight, MoveMenuRotateRightSide, MoveMenuRotateLeftSide, MoveMenuRotateFront, MoveMenuRotateBack,
         MoveMenuExit;
 
         private final String text;

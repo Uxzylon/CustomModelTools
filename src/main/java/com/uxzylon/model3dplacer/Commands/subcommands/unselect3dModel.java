@@ -56,7 +56,7 @@ public class unselect3dModel extends SubCommand {
                 return;
             }
 
-            player.sendMessage(String.format(Texts.unselected.getText(), customModelData));
+            player.sendMessage(getConfirmMessage(customModelData, stand) + Texts.unselected.getText());
         } else {
             player.sendMessage(Texts.noSelection.getText());
         }
