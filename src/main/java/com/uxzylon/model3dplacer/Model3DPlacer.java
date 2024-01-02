@@ -73,7 +73,10 @@ public final class Model3DPlacer extends JavaPlugin {
         addText("noCustomModelDataFound", "§cAucun Armor Stand avec CustomModelData trouvé !");
         addText("notFoundModel", "§cModèle non trouvé !");
         addText("wrongSyntax", "§cMauvaise syntaxe ! §d%s");
+
         addText("reloadedPack", "§6Resource Pack rechargé !");
+        addText("needToAcceptPack", "§cVous devez accepter le Resource Pack!");
+        addText("downloadErrorPack", "§cErreur lors du téléchargement du Resource Pack!");
 
         addText("MoveMenu", "§cMenu déplacement §2Par Uxzylon");
         addText("MoveMenuUp", "§aAVANT");
@@ -101,10 +104,10 @@ public final class Model3DPlacer extends JavaPlugin {
     public enum Texts {
         Title, giveDescription, moveDescription, placeDescription, removeDescription, selectDescription,
         switchDescription, unselectDescription, reloadDescription, modelMessage, noSelection, noPermission, playerOnly, unselected,
-        selected, removed, placed, given, switched, noCustomModelDataFound, notFoundModel, wrongSyntax, reloadedPack, MoveMenu,
-        MoveMenuUp, MoveMenuDown, MoveMenuLeft, MoveMenuRight, MoveMenuWhiteUp, MoveMenuWhiteDown, MoveMenuRotateLeft,
-        MoveMenuRotateRight, MoveMenuRotateRightSide, MoveMenuRotateLeftSide, MoveMenuRotateFront, MoveMenuRotateBack,
-        MoveMenuExit;
+        selected, removed, placed, given, switched, noCustomModelDataFound, notFoundModel, wrongSyntax, reloadedPack,
+        needToAcceptPack, downloadErrorPack, MoveMenu, MoveMenuUp, MoveMenuDown, MoveMenuLeft, MoveMenuRight,
+        MoveMenuWhiteUp, MoveMenuWhiteDown, MoveMenuRotateLeft, MoveMenuRotateRight, MoveMenuRotateRightSide,
+        MoveMenuRotateLeftSide, MoveMenuRotateFront, MoveMenuRotateBack, MoveMenuExit;
 
         private final String text;
 
