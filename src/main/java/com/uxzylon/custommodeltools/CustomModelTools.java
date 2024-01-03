@@ -33,8 +33,8 @@ public final class CustomModelTools extends JavaPlugin {
     private void createConfig() {
         getConfig().options().copyDefaults(true);
 
-        getConfig().addDefault("ResourcePack.url", "https://plopsainmc.anthony-jeanney.fr/Plopsacraft-Pack-df25ba3fed7ebc1709ce18db5fc09c96700da254.zip");
-        getConfig().addDefault("ResourcePack.hash", "df25ba3fed7ebc1709ce18db5fc09c96700da254");
+        getConfig().addDefault("ResourcePack.url", "https://plopsainmc.anthony-jeanney.fr/Plopsacraft-Pack-55d76cb62652984569cd2545f49889530ab3ce6d.zip");
+        getConfig().addDefault("ResourcePack.hash", "55d76cb62652984569cd2545f49889530ab3ce6d");
         getConfig().addDefault("ResourcePack.kickOnFail", true);
 
         addText("Title", "§6============ §aCustomModelTools §6============");

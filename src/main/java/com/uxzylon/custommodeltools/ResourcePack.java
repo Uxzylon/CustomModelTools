@@ -5,16 +5,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import static com.uxzylon.custommodeltools.Commands.SubCommand.getCustomSkull;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
 
@@ -22,6 +29,8 @@ public class ResourcePack {
     private String url;
     private String hash;
     public static HashMap<String, HashMap<String, Pair<Material, Integer>>> customModelDatas = new HashMap<>();
+    public static List<Inventory> guisCategories = new ArrayList<>();
+    public static HashMap<String, List<Inventory>> guisModels = new HashMap<>();
 
     public ResourcePack() {
         updatePack();
@@ -30,7 +39,10 @@ public class ResourcePack {
     public void updatePack() {
         this.url = plugin.getConfig().getString("ResourcePack.url");
         this.hash = plugin.getConfig().getString("ResourcePack.hash");
+
         parseResourcePack();
+
+        makeGuis();
     }
 
     public void setResourcePack(Player player) {
@@ -163,5 +175,48 @@ public class ResourcePack {
 
     public byte[] getHashHex() {
         return DatatypeConverter.parseHexBinary(hash);
+    }
+
+    private List<Inventory> makeInventory(Material material, List<String> models) {
+        int guiSize = 54;
+        int guiSizeWithoutArrowsLine = 45;
+        ItemStack arrowLeft = getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzdhZWU5YTc1YmYwZGY3ODk3MTgzMDE1Y2NhMGIyYTdkNzU1YzYzMzg4ZmYwMTc1MmQ1ZjQ0MTlmYzY0NSJ9fX0=");
+        ItemStack arrowRight = getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgyYWQxYjljYjRkZDIxMjU5YzBkNzVhYTMxNWZmMzg5YzNjZWY3NTJiZTM5NDkzMzgxNjRiYWM4NGE5NmUifX19");
+
+        List<Inventory> guisModels = new ArrayList<>();
+        int nbrGuis = 0;
+        int nbrPages = models.size() % guiSizeWithoutArrowsLine == 0 ? models.size() / guiSizeWithoutArrowsLine : models.size() / guiSizeWithoutArrowsLine + 1;
+        Inventory currentGui = Bukkit.createInventory(null, guiSize, "Categories " + nbrGuis + "/" + nbrPages);
+        for (int i = 0; i < models.size(); i++) {
+            if (i % guiSizeWithoutArrowsLine == 0) {
+                nbrGuis++;
+                currentGui = Bukkit.createInventory(null, guiSize, "Categories " + nbrGuis + "/" + nbrPages);
+                if (nbrGuis > 1 || nbrGuis < nbrPages) {
+                    currentGui.setItem(45, arrowLeft);
+                }
+                if (nbrGuis < nbrPages) {
+                    currentGui.setItem(53, arrowRight);
+                }
+                guisModels.add(currentGui);
+            }
+            ItemStack item = new ItemStack(material);
+            ItemMeta meta = item.getItemMeta();
+            if (meta == null) {
+                return null;
+            }
+            meta.setDisplayName(models.get(i));
+            item.setItemMeta(meta);
+            currentGui.addItem(item);
+        }
+
+        return guisModels;
+    }
+
+    private void makeGuis() {
+        guisCategories.clear();
+        guisModels.clear();
+        guisCategories = makeInventory(Material.PAPER, new ArrayList<>(customModelDatas.keySet()));
+        customModelDatas.forEach((category, modelMap) -> guisModels.put(
+                category, makeInventory(customModelDatas.get(category).values().iterator().next().getLeft(), new ArrayList<>(modelMap.keySet()))));
     }
 }

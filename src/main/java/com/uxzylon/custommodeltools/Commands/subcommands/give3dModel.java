@@ -1,15 +1,22 @@
 package com.uxzylon.custommodeltools.Commands.subcommands;
 
 import com.uxzylon.custommodeltools.Commands.SubCommand;
+import com.uxzylon.custommodeltools.ResourcePack;
 import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
+import static com.uxzylon.custommodeltools.CustomModelTools.*;
 import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
+import static com.uxzylon.custommodeltools.ResourcePack.guisCategories;
 
 public class give3dModel extends SubCommand {
 
@@ -57,7 +64,10 @@ public class give3dModel extends SubCommand {
 
             Pair<Material, Integer> material = customModelDatas.get(args[1]).get(args[2]);
             player.sendMessage(String.format(Texts.modelMessage.getText(), args[2], args[1], material.getLeft(), material.getRight()) + Texts.given.getText());
-        } else {
+        } else if (args.length == 1) {
+            // Open GUI with categories (First page)
+            player.openInventory(guisCategories.get(0));
+        }else {
             player.sendMessage(String.format(Texts.wrongSyntax.getText(), getSyntax()));
         }
     }
