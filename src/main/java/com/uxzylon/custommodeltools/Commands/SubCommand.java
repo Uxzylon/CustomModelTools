@@ -25,6 +25,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.uxzylon.custommodeltools.CustomModelTools.selectedStand;
 import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
 import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
@@ -167,6 +168,16 @@ public abstract class SubCommand {
         return head;
     }
 
+    public static void selectStand(Player player, ArmorStand stand) {
+        UUID uuid = player.getUniqueId();
+        ArmorStand oldStand = selectedStand.get(uuid);
+        if (oldStand != null) {
+            oldStand.setGlowing(false);
+        }
+        selectedStand.put(uuid, stand);
+        stand.setGlowing(true);
+    }
+
     public static void giveModel (Player player, String category, String model, ItemStack item) {
         player.getInventory().addItem(item);
 
@@ -227,6 +238,8 @@ public abstract class SubCommand {
         standEquip.setItemInMainHand(item);
 
         setSlotsDisabled(stand, true);
+
+        selectStand(player, stand);
 
         Pair<Material, Integer> material = customModelDatas.get(category).get(model);
         player.sendMessage(String.format(

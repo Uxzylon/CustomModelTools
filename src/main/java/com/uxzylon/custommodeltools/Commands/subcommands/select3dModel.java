@@ -48,13 +48,7 @@ public class select3dModel extends SubCommand {
         ArmorStand stand = getClosestModel(player);
 
         if (stand != null) {
-            UUID uuid = player.getUniqueId();
-            ArmorStand oldStand = selectedStand.get(uuid);
-            if (oldStand != null) {
-                oldStand.setGlowing(false);
-            }
-            selectedStand.put(uuid, stand);
-            stand.setGlowing(true);
+            selectStand(player, stand);
 
             int customModelData = getArmorStandCustomModelData(stand);
             if (customModelData == -1) {
