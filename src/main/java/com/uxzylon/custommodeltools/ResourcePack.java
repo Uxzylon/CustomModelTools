@@ -32,6 +32,13 @@ public class ResourcePack {
     public static List<Inventory> guisCategories = new ArrayList<>();
     public static HashMap<String, List<Inventory>> guisModels = new HashMap<>();
 
+    public enum PlayerFunction {
+        PLACE,
+        GIVE
+    }
+
+    public static HashMap<UUID, PlayerFunction> choosenPlayerFunction = new HashMap<>();
+
     public ResourcePack() {
         updatePack();
     }
@@ -270,5 +277,9 @@ public class ResourcePack {
         guisCategories = makeInventory("Categories", categoryModels);
 
         customModelDatas.forEach((category, modelMap) -> guisModels.put(category, makeInventory("Models: " + category, modelMap)));
+    }
+
+    public void setPlayerFunction(Player player, PlayerFunction playerFunction) {
+        choosenPlayerFunction.put(player.getUniqueId(), playerFunction);
     }
 }

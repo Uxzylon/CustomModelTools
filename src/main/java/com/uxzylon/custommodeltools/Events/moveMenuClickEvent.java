@@ -8,12 +8,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 
+import static com.uxzylon.custommodeltools.Commands.SubCommand.*;
 import static com.uxzylon.custommodeltools.CustomModelTools.*;
-import static com.uxzylon.custommodeltools.ResourcePack.guisCategories;
-import static com.uxzylon.custommodeltools.ResourcePack.guisModels;
+import static com.uxzylon.custommodeltools.ResourcePack.*;
 
 public class moveMenuClickEvent implements Listener {
     @EventHandler
@@ -159,6 +160,13 @@ public class moveMenuClickEvent implements Listener {
                 player.openInventory(guisModels.get(itemName).get(0));
             } else {
                 // do something with the model
+                ItemStack item = resourcePack.getItemFromCategoryModel(category, itemName);
+                if (choosenPlayerFunction.get(player.getUniqueId()) == PlayerFunction.PLACE) {
+                    placeModel(player, category, itemName, item);
+                } else {
+                    giveModel(player, category, itemName, item);
+                }
+
                 player.closeInventory();
             }
         }

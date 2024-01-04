@@ -5,16 +5,19 @@ import com.mojang.authlib.properties.Property;
 import com.uxzylon.custommodeltools.CustomModelTools;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.EulerAngle;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -77,15 +80,6 @@ public abstract class SubCommand {
                 return -1;
             }
             return helmetMeta.getCustomModelData();
-        }
-    }
-
-    public static boolean isInt(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
         }
     }
 
@@ -171,5 +165,72 @@ public abstract class SubCommand {
 
         head.setItemMeta(skullMeta);
         return head;
+    }
+
+    public static void giveModel (Player player, String category, String model, ItemStack item) {
+        player.getInventory().addItem(item);
+
+        Pair<Material, Integer> material = customModelDatas.get(category).get(model);
+
+        player.sendMessage(String.format(
+                CustomModelTools.Texts.modelMessage.getText(), model, category, material.getLeft(), material.getRight()
+        ) + CustomModelTools.Texts.given.getText());
+    }
+
+    public static void placeModel (Player player, String category, String model, ItemStack item) {
+        double locationX = player.getLocation().getBlockX();
+        int locationY = player.getLocation().getBlockY();
+        double locationZ = player.getLocation().getBlockZ();
+        int yaw;
+        switch (yawToFace(player.getLocation().getYaw())) {
+            case NORTH:
+                locationX = locationX + 0.125;
+                locationY = locationY - 1;
+                locationZ = locationZ + 1.125;
+                yaw = 180;
+                break;
+            case EAST:
+                locationX = locationX - 0.125;
+                locationY = locationY - 1;
+                locationZ = locationZ + 0.125;
+                yaw = -90;
+                break;
+            case WEST:
+                locationX = locationX + 1.125;
+                locationY = locationY - 1;
+                locationZ = locationZ + 0.875;
+                yaw = 90;
+                break;
+            default:
+                locationX = locationX + 0.875;
+                locationY = locationY - 1;
+                locationZ = locationZ - 0.125;
+                yaw = 0;
+                break;
+        }
+        Location location = new Location(player.getWorld(),locationX,locationY,locationZ,yaw,0);
+
+        ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+        stand.setArms(true);
+        stand.setBasePlate(false);
+        stand.setGravity(false);
+        stand.setInvulnerable(true);
+        stand.setPersistent(true);
+        stand.setVisible(false);
+        stand.setRightArmPose(new EulerAngle(Math.toRadians(270),0,0));
+
+        EntityEquipment standEquip = stand.getEquipment();
+        if (standEquip == null) {
+            return;
+        }
+
+        standEquip.setItemInMainHand(item);
+
+        setSlotsDisabled(stand, true);
+
+        Pair<Material, Integer> material = customModelDatas.get(category).get(model);
+        player.sendMessage(String.format(
+                CustomModelTools.Texts.modelMessage.getText(), model, category, material.getLeft(), material.getRight()
+        ) + CustomModelTools.Texts.placed.getText());
     }
 }
