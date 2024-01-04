@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
 import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
+import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
 public class place3dModel extends SubCommand {
 
@@ -45,14 +46,14 @@ public class place3dModel extends SubCommand {
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
-        return getArgsCategoryModel(args);
+        return resourcePack.getArgsCategoryModel(args);
     }
 
     @Override
     public void perform(Player player, String[] args) {
         if (args.length > 2 && args[1] != null && args[2] != null) {
 
-            ItemStack item = getItemFromCategoryModel(args[1], args[2]);
+            ItemStack item = resourcePack.getItemFromCategoryModel(args[1], args[2]);
             if (item == null) {
                 player.sendMessage(String.format(Texts.notFoundModel.getText(), getSyntax()));
                 return;

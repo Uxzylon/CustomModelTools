@@ -1,22 +1,17 @@
 package com.uxzylon.custommodeltools.Commands.subcommands;
 
 import com.uxzylon.custommodeltools.Commands.SubCommand;
-import com.uxzylon.custommodeltools.ResourcePack;
 import org.apache.commons.lang3.tuple.Pair;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.uxzylon.custommodeltools.CustomModelTools.*;
 import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
 import static com.uxzylon.custommodeltools.ResourcePack.guisCategories;
+import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
 public class give3dModel extends SubCommand {
 
@@ -47,14 +42,14 @@ public class give3dModel extends SubCommand {
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
-        return getArgsCategoryModel(args);
+        return resourcePack.getArgsCategoryModel(args);
     }
 
     @Override
     public void perform(Player player, String[] args) {
         if (args.length > 2 && args[1] != null && args[2] != null) {
 
-            ItemStack item = getItemFromCategoryModel(args[1], args[2]);
+            ItemStack item = resourcePack.getItemFromCategoryModel(args[1], args[2]);
             if (item == null) {
                 player.sendMessage(String.format(Texts.notFoundModel.getText(), getSyntax()));
                 return;

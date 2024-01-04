@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.uxzylon.custommodeltools.ResourcePack.customModelDatas;
+import static com.uxzylon.custommodeltools.CustomModelTools.resourcePack;
 
 public abstract class SubCommand {
     public abstract String getName();
@@ -32,46 +33,6 @@ public abstract class SubCommand {
     public abstract boolean canRunConsole();
     public abstract List<String> getSubcommandArguments(Player player, String[] args);
     public abstract void perform(Player player, String[] args);
-
-    public List<String> getArgsCategoryModel(String[] args) {
-        if (args.length == 2) {
-            return new ArrayList<>(customModelDatas.keySet());
-        } else if (args.length == 3) {
-            if (customModelDatas.containsKey(args[1])) {
-                return new ArrayList<>(customModelDatas.get(args[1]).keySet());
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    public ItemStack getItemFromCategoryModel(String category, String model) {
-        if (!customModelDatas.containsKey(category) || !customModelDatas.get(category).containsKey(model)) {
-            return null;
-        }
-
-        Pair<Material, Integer> pair = customModelDatas.get(category).get(model);
-        ItemStack item = new ItemStack(pair.getLeft());
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return null;
-        }
-        meta.setCustomModelData(pair.getRight());
-        meta.setDisplayName(model);
-        item.setItemMeta(meta);
-
-        return item;
-    }
-
-    public Triple<String, String, String> getModelInfoFromCustomModelData(int customModelData) {
-        for (Map.Entry<String, HashMap<String, Pair<Material, Integer>>> entry : customModelDatas.entrySet()) {
-            for (Map.Entry<String, Pair<Material, Integer>> entry2 : entry.getValue().entrySet()) {
-                if (entry2.getValue().getRight() == customModelData) {
-                    return Triple.of(entry2.getKey(), entry.getKey(), entry2.getValue().getLeft().toString());
-                }
-            }
-        }
-        return null;
-    }
 
     public ItemStack getArmorStandItem(ArmorStand stand) {
         EntityEquipment equipment = stand.getEquipment();
@@ -89,7 +50,7 @@ public abstract class SubCommand {
 
     public String getConfirmMessage(int customModelData, ArmorStand stand) {
         String message;
-        Triple<String, String, String> modelInfo = getModelInfoFromCustomModelData(customModelData);
+        Triple<String, String, String> modelInfo = resourcePack.getModelInfoFromCustomModelData(customModelData);
         if (modelInfo != null) {
             message = String.format(CustomModelTools.Texts.modelMessage.getText(), modelInfo.getLeft(), modelInfo.getMiddle(), modelInfo.getRight(), customModelData);
         } else {

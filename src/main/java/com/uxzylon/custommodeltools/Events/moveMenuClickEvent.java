@@ -11,13 +11,16 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 
-import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
-import static com.uxzylon.custommodeltools.CustomModelTools.selectedStand;
+import static com.uxzylon.custommodeltools.CustomModelTools.*;
+import static com.uxzylon.custommodeltools.ResourcePack.guisCategories;
+import static com.uxzylon.custommodeltools.ResourcePack.guisModels;
 
 public class moveMenuClickEvent implements Listener {
     @EventHandler
     public void onEvent(InventoryClickEvent e) {
-        if (e.getView().getTitle().equalsIgnoreCase(Texts.MoveMenu.getText())) {
+        String title = e.getView().getTitle();
+
+        if (title.equalsIgnoreCase(Texts.MoveMenu.getText())) {
 
             if (e.getCurrentItem() == null) {
                 return;
@@ -98,6 +101,66 @@ public class moveMenuClickEvent implements Listener {
             }
 
             e.setCancelled(true);
+
+        } else if (title.startsWith("Categories") || title.startsWith("Models")) {
+
+            if (e.getCurrentItem() == null) {
+                return;
+            }
+
+            Player player = (Player) e.getWhoClicked();
+            ItemMeta itemMeta = e.getCurrentItem().getItemMeta();
+            if (itemMeta == null) {
+                return;
+            }
+
+            boolean isCategory = title.startsWith("Categories");
+
+            // get page number (after space and before slash)
+            int indexLocation = isCategory ? 1 : 2;
+            int pageIndex = Integer.parseInt(title.split(" ")[indexLocation].split("/")[0]) - 1;
+            int nbPages = Integer.parseInt(title.split(" ")[indexLocation].split("/")[1]) - 1;
+            int previousPage = pageIndex - 1;
+            int nextPage = pageIndex + 1;
+            if (previousPage < 0) {
+                previousPage = nbPages;
+            }
+            if (nextPage > nbPages) {
+                nextPage = 0;
+            }
+
+            String category = isCategory ? itemMeta.getDisplayName() : title.split(" ")[1];
+
+            if (e.getSlot() == 49) { // exit
+                player.closeInventory();
+                if (!isCategory) {
+                    player.openInventory(guisCategories.get(0));
+                }
+                return;
+            } else if (e.getSlot() == 45) {  // previous page
+                if (isCategory) {
+                    player.openInventory(guisCategories.get(previousPage));
+                } else {
+                    player.openInventory(guisModels.get(category).get(previousPage));
+                }
+                return;
+            } else if (e.getSlot() == 53) {  // next page
+                if (isCategory) {
+                    player.openInventory(guisCategories.get(nextPage));
+                } else {
+                    player.openInventory(guisModels.get(category).get(nextPage));
+                }
+                return;
+            }
+
+            String itemName = itemMeta.getDisplayName();
+
+            if (isCategory) {
+                player.openInventory(guisModels.get(itemName).get(0));
+            } else {
+                // do something with the model
+                player.closeInventory();
+            }
         }
     }
 }

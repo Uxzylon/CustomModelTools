@@ -7,13 +7,13 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
 
 import static com.uxzylon.custommodeltools.CustomModelTools.Texts;
 import static com.uxzylon.custommodeltools.CustomModelTools.selectedStand;
+import static com.uxzylon.custommodeltools.Utils.*;
 
 public class move3dModel extends SubCommand {
 
@@ -97,12 +97,5 @@ public class move3dModel extends SubCommand {
         } else {
             player.sendMessage(Texts.noSelection.getText());
         }
-    }
-
-    private void setDisplayName(ItemStack item, String name) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
     }
 }

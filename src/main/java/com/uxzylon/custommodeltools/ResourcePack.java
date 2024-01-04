@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,15 +16,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import static com.uxzylon.custommodeltools.Commands.SubCommand.getCustomSkull;
 import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 import static com.uxzylon.custommodeltools.CustomModelTools.plugin;
+import static com.uxzylon.custommodeltools.Utils.*;
 
 public class ResourcePack {
     private String url;
@@ -177,34 +177,83 @@ public class ResourcePack {
         return DatatypeConverter.parseHexBinary(hash);
     }
 
-    private List<Inventory> makeInventory(Material material, List<String> models) {
+    public List<String> getArgsCategoryModel(String[] args) {
+        if (args.length == 2) {
+            return new ArrayList<>(customModelDatas.keySet());
+        } else if (args.length == 3) {
+            if (customModelDatas.containsKey(args[1])) {
+                return new ArrayList<>(customModelDatas.get(args[1]).keySet());
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public ItemStack getItemFromCategoryModel(String category, String model) {
+        if (!customModelDatas.containsKey(category) || !customModelDatas.get(category).containsKey(model)) {
+            return null;
+        }
+
+        Pair<Material, Integer> triple = customModelDatas.get(category).get(model);
+        ItemStack item = new ItemStack(triple.getLeft());
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return null;
+        }
+        meta.setCustomModelData(triple.getRight());
+        meta.setDisplayName(model);
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public Triple<String, String, String> getModelInfoFromCustomModelData(int customModelData) {
+        for (Map.Entry<String, HashMap<String, Pair<Material, Integer>>> entry : customModelDatas.entrySet()) {
+            for (Map.Entry<String, Pair<Material, Integer>> entry2 : entry.getValue().entrySet()) {
+                if (entry2.getValue().getRight() == customModelData) {
+                    return Triple.of(entry2.getKey(), entry.getKey(), entry2.getValue().getLeft().toString());
+                }
+            }
+        }
+        return null;
+    }
+
+    private List<Inventory> makeInventory(String title, HashMap<String, Pair<Material, Integer>> models) {
         int guiSize = 54;
         int guiSizeWithoutArrowsLine = 45;
         ItemStack arrowLeft = getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzdhZWU5YTc1YmYwZGY3ODk3MTgzMDE1Y2NhMGIyYTdkNzU1YzYzMzg4ZmYwMTc1MmQ1ZjQ0MTlmYzY0NSJ9fX0=");
+        setDisplayName(arrowLeft, "Previous page");
         ItemStack arrowRight = getCustomSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgyYWQxYjljYjRkZDIxMjU5YzBkNzVhYTMxNWZmMzg5YzNjZWY3NTJiZTM5NDkzMzgxNjRiYWM4NGE5NmUifX19");
+        setDisplayName(arrowRight, "Next page");
+        ItemStack exit = new ItemStack(Material.BARRIER);
+        setDisplayName(exit, "Back");
 
         List<Inventory> guisModels = new ArrayList<>();
         int nbrGuis = 0;
-        int nbrPages = models.size() % guiSizeWithoutArrowsLine == 0 ? models.size() / guiSizeWithoutArrowsLine : models.size() / guiSizeWithoutArrowsLine + 1;
-        Inventory currentGui = Bukkit.createInventory(null, guiSize, "Categories " + nbrGuis + "/" + nbrPages);
-        for (int i = 0; i < models.size(); i++) {
+        int nbrPages = models.keySet().size() % guiSizeWithoutArrowsLine == 0 ? models.keySet().size() / guiSizeWithoutArrowsLine : models.keySet().size() / guiSizeWithoutArrowsLine + 1;
+        Inventory currentGui = Bukkit.createInventory(null, guiSize, title + " " + nbrGuis + "/" + nbrPages);
+        for (int i = 0; i < models.keySet().size(); i++) {
             if (i % guiSizeWithoutArrowsLine == 0) {
                 nbrGuis++;
-                currentGui = Bukkit.createInventory(null, guiSize, "Categories " + nbrGuis + "/" + nbrPages);
-                if (nbrGuis > 1 || nbrGuis < nbrPages) {
+                currentGui = Bukkit.createInventory(null, guiSize, title + " " + nbrGuis + "/" + nbrPages);
+
+                currentGui.setItem(49, exit);
+                if (nbrPages > 1) {
                     currentGui.setItem(45, arrowLeft);
-                }
-                if (nbrGuis < nbrPages) {
                     currentGui.setItem(53, arrowRight);
                 }
+
                 guisModels.add(currentGui);
             }
-            ItemStack item = new ItemStack(material);
+
+            String modelName = (String) models.keySet().toArray()[i];
+
+            ItemStack item = new ItemStack(models.get(modelName).getLeft());
             ItemMeta meta = item.getItemMeta();
             if (meta == null) {
                 return null;
             }
-            meta.setDisplayName(models.get(i));
+            meta.setDisplayName(modelName);
+            meta.setCustomModelData(models.get(modelName).getRight());
             item.setItemMeta(meta);
             currentGui.addItem(item);
         }
@@ -215,8 +264,11 @@ public class ResourcePack {
     private void makeGuis() {
         guisCategories.clear();
         guisModels.clear();
-        guisCategories = makeInventory(Material.PAPER, new ArrayList<>(customModelDatas.keySet()));
-        customModelDatas.forEach((category, modelMap) -> guisModels.put(
-                category, makeInventory(customModelDatas.get(category).values().iterator().next().getLeft(), new ArrayList<>(modelMap.keySet()))));
+
+        HashMap<String, Pair<Material, Integer>> categoryModels = new HashMap<>();
+        customModelDatas.forEach((category, modelMap) -> categoryModels.put(category, Pair.of(Material.BOOK, 0)));
+        guisCategories = makeInventory("Categories", categoryModels);
+
+        customModelDatas.forEach((category, modelMap) -> guisModels.put(category, makeInventory("Models: " + category, modelMap)));
     }
 }
