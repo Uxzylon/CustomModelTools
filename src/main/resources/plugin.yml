@@ -50,8 +50,31 @@ permissions:
     default: op
     children:
       custommodeltools.command: true
+  custommodeltools.bypass.resourcepack:
+    description: Allow bypass resourcepack
+    default: false
+    children:
+      custommodeltools.bypass: true
   custommodeltools.*:
     description: Grants all other permissions
     default: false
     children:
       custommodeltools.command: true
+      custommodeltools.bypass: true
+  custommodeltools.command.*:
+    description: Grants all permissions for commands
+    default: false
+    children:
+      custommodeltools.command.give: true
+      custommodeltools.command.move: true
+      custommodeltools.command.place: true
+      custommodeltools.command.remove: true
+      custommodeltools.command.select: true
+      custommodeltools.command.unselect: true
+      custommodeltools.command.switch: true
+      custommodeltools.command.reload: true
+  custommodeltools.bypass.*:
+    description: Grants all permissions for bypass
+    default: false
+    children:
+      custommodeltools.bypass.resourcepack: true

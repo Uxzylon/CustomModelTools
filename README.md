@@ -37,15 +37,18 @@ The plugin will then use the category and name in the commands and in the tab co
 
 ## Permissions
 
-- `custommodeltools.reload` - Allows the use of `/model3d reload`
-- `custommodeltools.give` - Allows the use of `/model3d give`
-- `custommodeltools.place` - Allows the use of `/model3d place`
-- `custommodeltools.select` - Allows the use of `/model3d select`
-- `custommodeltools.unselect` - Allows the use of `/model3d unselect`
-- `custommodeltools.move` - Allows the use of `/model3d move`
-- `custommodeltools.switch` - Allows the use of `/model3d switch`
-- `custommodeltools.remove` - Allows the use of `/model3d remove`
-- `custommodeltools.*` - Allows the use of all commands
+- `custommodeltools.command.reload` - Allows the use of `/model3d reload`
+- `custommodeltools.command.give` - Allows the use of `/model3d give`
+- `custommodeltools.command.place` - Allows the use of `/model3d place`
+- `custommodeltools.command.select` - Allows the use of `/model3d select`
+- `custommodeltools.command.unselect` - Allows the use of `/model3d unselect`
+- `custommodeltools.command.move` - Allows the use of `/model3d move`
+- `custommodeltools.command.switch` - Allows the use of `/model3d switch`
+- `custommodeltools.command.remove` - Allows the use of `/model3d remove`
+- `custommodeltools.command.*` - Allows the use of all commands
+- `custommodeltools.bypass.resourcepack` - Allows the Player to bypass the ResourcePack Download
+- `custommodeltools.bypass.*` - Allows the Player to bypass all restrictions
+- `custommodeltools.*` - Allows everything
 
 ## Config
 

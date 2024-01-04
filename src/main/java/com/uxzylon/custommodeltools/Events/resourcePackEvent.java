@@ -16,6 +16,9 @@ public class resourcePackEvent implements Listener {
     @EventHandler
     public void ResourcePackStatus(PlayerResourcePackStatusEvent event) {
         Player player = event.getPlayer();
+
+        if (player.hasPermission("custommodeltools.bypass.resourcepack")) return;
+
         String declined = Texts.needToAcceptPack.getText();
         String error =Texts.downloadErrorPack.getText();
         switch (event.getStatus()) {
