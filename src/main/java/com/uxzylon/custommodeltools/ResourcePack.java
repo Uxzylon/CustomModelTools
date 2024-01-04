@@ -255,6 +255,9 @@ public class ResourcePack {
             String modelName = (String) models.keySet().toArray()[i];
 
             ItemStack item = new ItemStack(models.get(modelName).getLeft());
+            if (models.get(modelName).getLeft() == Material.PLAYER_HEAD) {
+                item = getCustomSkull(Alphabet.valueOf(String.valueOf(modelName.toUpperCase().charAt(0))).getValue());
+            }
             ItemMeta meta = item.getItemMeta();
             if (meta == null) {
                 return null;
@@ -273,7 +276,22 @@ public class ResourcePack {
         guisModels.clear();
 
         HashMap<String, Pair<Material, Integer>> categoryModels = new HashMap<>();
-        customModelDatas.forEach((category, modelMap) -> categoryModels.put(category, Pair.of(Material.BOOK, 0)));
+        HashMap<String, Pair<Material, Integer>> finalCategoryModels = categoryModels;
+        customModelDatas.forEach((category, modelMap) -> finalCategoryModels.put(category, Pair.of(Material.PLAYER_HEAD, 0)));
+
+        // sort the categories
+        categoryModels = categoryModels.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
+
+        // sort the models
+        customModelDatas.forEach((category, modelMap) -> {
+            modelMap = modelMap.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .collect(LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
+            customModelDatas.put(category, modelMap);
+        });
+
         guisCategories = makeInventory("Categories", categoryModels);
 
         customModelDatas.forEach((category, modelMap) -> guisModels.put(category, makeInventory("Models: " + category, modelMap)));
