@@ -27,7 +27,9 @@ The plugin will then use the category and name in the commands and in the tab co
 
 - `/model3d` - Main Command
 - `/model3d reload` - Reloads the Plugin
+- `/model3d give` - Opens a GUI to get a CustomModelData Item
 - `/model3d give <category> <name>` - Gives the Player the Item with the given Category and Name
+- `/model3d place` - Opens a GUI to place a CustomModelData Item
 - `/model3d place <category> <name>` - Places the Item with the given Category and Name at the Players Location
 - `/model3d select` - Selects the nearest ArmorStand
 - `/model3d unselect` - Deselects the selected ArmorStand
